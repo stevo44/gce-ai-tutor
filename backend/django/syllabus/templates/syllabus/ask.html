@@ -1,0 +1,11 @@
+{% extends 'syllabus/base.html' %}
+
+{% block content %}
+<h1>Ask a Question</h1>
+<form method="post" action="{% url 'ask' %}">
+    {% csrf_token %}
+    <input type="hidden" name="topic_id" value="{{ topic_id }}">
+    <textarea name="question" placeholder="Type your question here..."></textarea>
+    <button type="submit">Ask AI</button>
+</form>
+{% endblock %}
