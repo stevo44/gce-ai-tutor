@@ -1,0 +1,286 @@
+{% extends "syllabus/base.html" %}
+
+{% block title %}Student Performance Dashboard | Cameroon GCE Master{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+    rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#2f2d8f",
+                    "accent-amber": "#F4B400",
+                    "background-light": "#f6f6f8",
+                    "background-dark": "#14141e",
+                    "charcoal": "#333333",
+                },
+                fontFamily: {
+                    "display": ["Inter", "sans-serif"]
+                },
+                borderRadius: {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+                },
+            },
+        },
+    }
+</script>
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="flex h-screen overflow-hidden">
+    <!-- Sidebar Navigation -->
+    <aside
+        class="w-64 bg-white dark:bg-background-dark border-r border-gray-200 dark:border-gray-800 flex flex-col justify-between p-4 shrink-0">
+        <div class="flex flex-col gap-8">
+            <div class="flex items-center gap-3 px-2">
+                <div class="bg-primary rounded-lg p-2 text-white">
+                    <span class="material-symbols-outlined">school</span>
+                </div>
+                <div>
+                    <h1 class="text-primary dark:text-white text-base font-bold leading-tight">GCE Master</h1>
+                    <p class="text-gray-500 dark:text-gray-400 text-xs">Prep 2024</p>
+                </div>
+            </div>
+            <nav class="flex flex-col gap-2">
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary font-semibold"
+                    href="{% url 'home' %}">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="text-sm">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    href="{% url 'topmastery_breakdown' %}">
+                    <span class="material-symbols-outlined">book</span>
+                    <span class="text-sm font-medium">Subjects</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    href="{% url 'quiz' %}">
+                    <span class="material-symbols-outlined">quiz</span>
+                    <span class="text-sm font-medium">Practice Quizzes</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    href="{% url 'chatbot' %}">
+                    <span class="material-symbols-outlined">smart_toy</span>
+                    <span class="text-sm font-medium">AI Tutor</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="text-sm font-medium">Settings</span>
+                </a>
+            </nav>
+        </div>
+        <div class="flex flex-col gap-4">
+            <div class="bg-primary/5 rounded-xl p-4 flex flex-col gap-3">
+                <p class="text-xs font-bold text-primary uppercase tracking-wider">Plan Status</p>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-primary h-2 rounded-full" style="width: 72%"></div>
+                </div>
+                <p class="text-xs text-gray-500">72% Syllabus covered</p>
+            </div>
+            <button
+                class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-sm">event_note</span>
+                <span>Study Planner</span>
+            </button>
+        </div>
+    </aside>
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto p-8 lg:px-12">
+        <!-- Top Header & Stats -->
+        <header class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
+            <div>
+                <h2 class="text-charcoal dark:text-white text-4xl font-black tracking-tight mb-2">Hello, Roland</h2>
+                <p class="text-gray-500 dark:text-gray-400 text-lg">Ready to master your GCE subjects today?</p>
+            </div>
+            <div class="flex gap-4">
+                <div
+                    class="flex items-center gap-4 bg-white dark:bg-background-dark p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800">
+                    <div class="relative w-16 h-16 flex items-center justify-center">
+                        <svg class="w-full h-full transform -rotate-90">
+                            <circle class="text-gray-100 dark:text-gray-800" cx="32" cy="32" fill="transparent" r="28"
+                                stroke="currentColor" stroke-width="4"></circle>
+                            <circle class="text-primary" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor"
+                                stroke-dasharray="176" stroke-dashoffset="49" stroke-width="4"></circle>
+                        </svg>
+                        <span class="absolute text-sm font-bold text-primary">72%</span>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Mastery</p>
+                        <p class="text-charcoal dark:text-white font-bold">+5% this week</p>
+                    </div>
+                </div>
+                <div
+                    class="flex items-center gap-4 bg-white dark:bg-background-dark p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800">
+                    <div class="bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 p-3 rounded-full">
+                        <span class="material-symbols-outlined">local_fire_department</span>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Streak</p>
+                        <p class="text-charcoal dark:text-white font-bold">12 Days</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Center Section: Weakness Heatmap -->
+            <section class="lg:col-span-2 flex flex-col gap-6">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-bold text-charcoal dark:text-white">Weakness Heatmap</h3>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-gray-500">Legend:</span>
+                        <div class="flex items-center gap-1">
+                            <div class="w-3 h-3 rounded-sm bg-accent-amber"></div> <span
+                                class="text-[10px] text-gray-500">Critical</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <div class="w-3 h-3 rounded-sm bg-teal-500"></div> <span
+                                class="text-[10px] text-gray-500">Moderate</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <div class="w-3 h-3 rounded-sm bg-primary"></div> <span
+                                class="text-[10px] text-gray-500">Strong</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- Heatmap Tiles -->
+                    <div
+                        class="p-5 rounded-xl border border-accent-amber/30 bg-accent-amber/10 flex flex-col gap-3 transition-transform hover:scale-[1.02]">
+                        <span class="material-symbols-outlined text-accent-amber">science</span>
+                        <div>
+                            <h4 class="font-bold text-charcoal dark:text-white text-sm">Organic Chemistry</h4>
+                            <p class="text-xs text-accent-amber font-medium">Critical Weakness</p>
+                        </div>
+                    </div>
+                    <div
+                        class="p-5 rounded-xl border border-teal-500/30 bg-teal-500/10 flex flex-col gap-3 transition-transform hover:scale-[1.02]">
+                        <span class="material-symbols-outlined text-teal-600">fitness_center</span>
+                        <div>
+                            <h4 class="font-bold text-charcoal dark:text-white text-sm">Mechanics</h4>
+                            <p class="text-xs text-teal-600 font-medium">Moderate Mastery</p>
+                        </div>
+                    </div>
+                    <div
+                        class="p-5 rounded-xl border border-primary/30 bg-primary/10 flex flex-col gap-3 transition-transform hover:scale-[1.02]">
+                        <span class="material-symbols-outlined text-primary">functions</span>
+                        <div>
+                            <h4 class="font-bold text-charcoal dark:text-white text-sm">Pure Maths</h4>
+                            <p class="text-xs text-primary font-medium">High Mastery</p>
+                        </div>
+                    </div>
+                    <div
+                        class="p-5 rounded-xl border border-accent-amber/30 bg-accent-amber/10 flex flex-col gap-3 transition-transform hover:scale-[1.02]">
+                        <span class="material-symbols-outlined text-accent-amber">genetics</span>
+                        <div>
+                            <h4 class="font-bold text-charcoal dark:text-white text-sm">Cell Biology</h4>
+                            <p class="text-xs text-accent-amber font-medium">Critical Weakness</p>
+                        </div>
+                    </div>
+                    <div
+                        class="p-5 rounded-xl border border-teal-500/30 bg-teal-500/10 flex flex-col gap-3 transition-transform hover:scale-[1.02]">
+                        <span class="material-symbols-outlined text-teal-600">language</span>
+                        <div>
+                            <h4 class="font-bold text-charcoal dark:text-white text-sm">English Literature</h4>
+                            <p class="text-xs text-teal-600 font-medium">Moderate Mastery</p>
+                        </div>
+                    </div>
+                    <div
+                        class="p-5 rounded-xl border border-primary/30 bg-primary/10 flex flex-col gap-3 transition-transform hover:scale-[1.02]">
+                        <span class="material-symbols-outlined text-primary">payments</span>
+                        <div>
+                            <h4 class="font-bold text-charcoal dark:text-white text-sm">Economics</h4>
+                            <p class="text-xs text-primary font-medium">High Mastery</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Additional Detail Graph Placeholder -->
+                <div
+                    class="bg-white dark:bg-background-dark p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm mt-2">
+                    <div class="flex items-center justify-between mb-4">
+                        <p class="text-sm font-bold text-gray-500 uppercase tracking-wider">Weekly Progress Activity</p>
+                        <span class="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded">Past 7
+                            Days</span>
+                    </div>
+                    <div class="h-32 flex items-end justify-between gap-2 px-2">
+                        <div class="flex-1 bg-primary/20 rounded-t h-[40%]"></div>
+                        <div class="flex-1 bg-primary/20 rounded-t h-[60%]"></div>
+                        <div class="flex-1 bg-primary/20 rounded-t h-[35%]"></div>
+                        <div class="flex-1 bg-primary/20 rounded-t h-[80%]"></div>
+                        <div class="flex-1 bg-primary/20 rounded-t h-[55%]"></div>
+                        <div class="flex-1 bg-primary/40 rounded-t h-[90%]"></div>
+                        <div class="flex-1 bg-primary rounded-t h-[75%]"></div>
+                    </div>
+                </div>
+            </section>
+            <!-- Right Section: Focus Areas Card -->
+            <section class="flex flex-col gap-6">
+                <div
+                    class="bg-white dark:bg-background-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-xl relative overflow-hidden h-full">
+                    <!-- AI Gradient accent -->
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-accent-amber/10 blur-3xl -mr-16 -mt-16"></div>
+                    <div class="flex items-center gap-2 mb-6">
+                        <span class="material-symbols-outlined text-accent-amber">psychology</span>
+                        <h3 class="text-xl font-bold text-charcoal dark:text-white">AI Focus Areas</h3>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-6 leading-relaxed">Based on your recent practice results, focus
+                        on these 3 subtopics to maximize your score:</p>
+                    <div class="flex flex-col gap-4 mb-8">
+                        <div
+                            class="flex items-start gap-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50 border-l-4 border-accent-amber">
+                            <div class="text-accent-amber font-black text-lg">1.</div>
+                            <div>
+                                <h5 class="text-sm font-bold text-charcoal dark:text-white">Organic Chem: Alkanes</h5>
+                                <p class="text-xs text-gray-400">Recall error: Nomenclature</p>
+                            </div>
+                        </div>
+                        <div
+                            class="flex items-start gap-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50 border-l-4 border-teal-500">
+                            <div class="text-teal-500 font-black text-lg">2.</div>
+                            <div>
+                                <h5 class="text-sm font-bold text-charcoal dark:text-white">Mechanics: Projectiles</h5>
+                                <p class="text-xs text-gray-400">Calculation error: Angle factors</p>
+                            </div>
+                        </div>
+                        <div
+                            class="flex items-start gap-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50 border-l-4 border-primary">
+                            <div class="text-primary font-black text-lg">3.</div>
+                            <div>
+                                <h5 class="text-sm font-bold text-charcoal dark:text-white">Pure Maths: Limits</h5>
+                                <p class="text-xs text-gray-400">Efficiency: Speed optimization</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-auto">
+                        <a href="{% url 'quiz' %}"
+                            class="w-full bg-accent-amber hover:bg-amber-500 text-charcoal font-black py-4 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 mb-4 group">
+                            <span>Start Recommended Quiz</span>
+                            <span
+                                class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </a>
+                        <p class="text-[11px] text-center text-gray-400 uppercase font-bold tracking-widest">Estimated
+                            time: 15 mins</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+{% endblock %}

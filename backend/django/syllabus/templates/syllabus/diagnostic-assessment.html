@@ -1,0 +1,187 @@
+{% extends "syllabus/base.html" %}
+
+{% block title %}Diagnostic Assessment Onboarding{% endblock %}
+
+{% block extra_head %}
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter & Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+  rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+  rel="stylesheet" />
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#2f2d8f",
+          "secondary": "#2BB0A6",
+          "background-light": "#f6f6f8",
+          "background-dark": "#14141e",
+        },
+        fontFamily: {
+          "display": ["Inter", "sans-serif"]
+        },
+        borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+      },
+    },
+  }
+</script>
+<style>
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="layout-container flex flex-col items-center w-full min-h-screen">
+  <!-- Header / Stepper Section -->
+  <header class="w-full max-w-[1200px] px-6 py-8 flex flex-col items-center">
+    <!-- Progress Bar / Stepper -->
+    <div class="w-full max-w-[800px] mb-10">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <span
+            class="flex items-center justify-center w-8 h-8 rounded-full bg-secondary text-white text-sm font-bold">1</span>
+          <span class="text-sm font-semibold text-primary dark:text-blue-400">Subject Selection</span>
+        </div>
+        <div class="flex-1 mx-4 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div class="h-full bg-secondary w-1/2"></div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span
+            class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-gray-300 dark:border-gray-600 text-gray-400 text-sm font-bold">2</span>
+          <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Diagnostic Quiz</span>
+        </div>
+        <div class="flex-1 mx-4 h-1 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+        <div class="flex items-center gap-2">
+          <span
+            class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-gray-300 dark:border-gray-600 text-gray-400 text-sm font-bold">3</span>
+          <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Result Summary</span>
+        </div>
+      </div>
+    </div>
+    <!-- Headline Section -->
+    <div class="text-center max-w-[800px] mb-8">
+      <h1 class="text-primary dark:text-white text-4xl font-bold leading-tight tracking-tight mb-4">
+        Let’s identify what you struggle with — and fix it.
+      </h1>
+      <p class="text-gray-600 dark:text-gray-400 text-lg">
+        Select your subjects to start the diagnostic assessment tailored for Cameroon GCE.
+      </p>
+    </div>
+  </header>
+  <!-- Subject Grid Selection -->
+  <section class="w-full max-w-[960px] px-6 pb-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Chemistry Card -->
+      <div
+        class="group cursor-pointer flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm border-2 border-transparent hover:border-secondary transition-all">
+        <div
+          class="w-20 h-20 bg-primary/10 dark:bg-primary/20 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-primary dark:text-blue-400 text-4xl">science</span>
+        </div>
+        <h3 class="text-xl font-bold text-[#101019] dark:text-white">Chemistry</h3>
+        <p class="text-gray-500 dark:text-gray-400 text-sm text-center mt-2">Physical &amp; Organic Chemistry</p>
+      </div>
+      <!-- Physics Card (Active/Selected State Example) -->
+      <div
+        class="group cursor-pointer flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md border-2 border-secondary ring-4 ring-secondary/10 transition-all">
+        <div class="w-20 h-20 bg-secondary/10 dark:bg-secondary/20 rounded-full flex items-center justify-center mb-4">
+          <span class="material-symbols-outlined text-secondary text-4xl">auto_fix_high</span>
+        </div>
+        <h3 class="text-xl font-bold text-[#101019] dark:text-white">Physics</h3>
+        <p class="text-gray-500 dark:text-gray-400 text-sm text-center mt-2">Mechanics &amp; Thermodynamics</p>
+      </div>
+      <!-- Maths Card -->
+      <div
+        class="group cursor-pointer flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm border-2 border-transparent hover:border-secondary transition-all">
+        <div
+          class="w-20 h-20 bg-primary/10 dark:bg-primary/20 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-primary dark:text-blue-400 text-4xl">calculate</span>
+        </div>
+        <h3 class="text-xl font-bold text-[#101019] dark:text-white">Maths</h3>
+        <p class="text-gray-500 dark:text-gray-400 text-sm text-center mt-2">Pure &amp; Applied Mathematics</p>
+      </div>
+    </div>
+  </section>
+  <!-- Quiz Container -->
+  <main class="w-full max-w-[800px] px-6 py-12 flex flex-col gap-8">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl border border-gray-100 dark:border-gray-700">
+      <!-- Question Header -->
+      <div class="flex items-center justify-between mb-8">
+        <div
+          class="bg-primary/10 dark:bg-primary/20 text-primary dark:text-blue-400 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+          Physics: Dynamics
+        </div>
+        <div class="text-gray-500 dark:text-gray-400 text-sm font-medium">
+          Question 4 <span class="text-gray-300 dark:text-gray-600 px-1">/</span> 20
+        </div>
+      </div>
+      <!-- The Question -->
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white leading-snug mb-8">
+        Which of the following describes the relationship between mass and acceleration when a constant force is
+        applied?
+      </h2>
+      <!-- Multiple Choice Options -->
+      <div class="space-y-4">
+        <button
+          class="w-full flex items-center p-5 text-left bg-gray-50 dark:bg-gray-900/50 border-2 border-gray-100 dark:border-gray-700 rounded-xl hover:border-secondary transition-colors group">
+          <span
+            class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg font-bold text-gray-500 group-hover:text-secondary group-hover:border-secondary transition-colors mr-4">A</span>
+          <p class="text-gray-700 dark:text-gray-300 font-medium">Acceleration is directly proportional to mass.</p>
+        </button>
+        <button
+          class="w-full flex items-center p-5 text-left bg-secondary/5 border-2 border-secondary rounded-xl transition-colors ring-4 ring-secondary/10">
+          <span
+            class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-secondary text-white border-2 border-secondary rounded-lg font-bold mr-4">B</span>
+          <p class="text-gray-900 dark:text-white font-semibold">Acceleration is inversely proportional to mass.</p>
+          <span class="material-symbols-outlined ml-auto text-secondary">check_circle</span>
+        </button>
+        <button
+          class="w-full flex items-center p-5 text-left bg-gray-50 dark:bg-gray-900/50 border-2 border-gray-100 dark:border-gray-700 rounded-xl hover:border-secondary transition-colors group">
+          <span
+            class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg font-bold text-gray-500 group-hover:text-secondary group-hover:border-secondary transition-colors mr-4">C</span>
+          <p class="text-gray-700 dark:text-gray-300 font-medium">Acceleration and mass are independent of each other.
+          </p>
+        </button>
+        <button
+          class="w-full flex items-center p-5 text-left bg-gray-50 dark:bg-gray-900/50 border-2 border-gray-100 dark:border-gray-700 rounded-xl hover:border-secondary transition-colors group">
+          <span
+            class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg font-bold text-gray-500 group-hover:text-secondary group-hover:border-secondary transition-colors mr-4">D</span>
+          <p class="text-gray-700 dark:text-gray-300 font-medium">Acceleration is proportional to the square of the
+            mass.</p>
+        </button>
+      </div>
+      <!-- Controls -->
+      <div class="flex items-center justify-between mt-12">
+        <button class="text-gray-500 hover:text-primary font-semibold flex items-center gap-2 transition-colors">
+          <span class="material-symbols-outlined">arrow_back</span>
+          Previous
+        </button>
+        <button
+          class="bg-secondary hover:bg-secondary/90 text-white px-10 py-3.5 rounded-lg font-bold text-lg shadow-lg shadow-secondary/20 flex items-center gap-2 transition-all active:scale-95">
+          Next Question
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+      </div>
+    </div>
+    <!-- Focus Mode Indicator -->
+    <p class="text-center text-gray-400 dark:text-gray-500 text-sm flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined text-[18px]">verified_user</span>
+      Focus Mode Active: Take your time to answer carefully.
+    </p>
+  </main>
+  <!-- Simple Footer -->
+  <footer class="w-full py-8 text-center text-gray-400 text-sm">
+    <p>© 2024 EduCam GCE Tutoring Platform. All rights reserved.</p>
+  </footer>
+</div>
+{% endblock %}

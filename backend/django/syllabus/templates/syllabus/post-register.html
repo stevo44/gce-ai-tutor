@@ -1,0 +1,153 @@
+{% extends "syllabus/base.html" %}
+
+{% block title %}Welcome to GCE Prep{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap"
+    rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#f5b400",
+                    "background-light": "#f8f8f5",
+                    "background-dark": "#231e0f",
+                },
+                fontFamily: {
+                    "display": ["Lexend", "sans-serif"]
+                },
+                borderRadius: {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+                },
+            },
+        },
+    }
+</script>
+<style>
+    body {
+        font-family: 'Lexend', sans-serif;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col transition-colors duration-300">
+    <!-- Top Navigation Bar -->
+    <header class="w-full border-b border-[#f4f0e6] dark:border-white/10 bg-background-light dark:bg-background-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="size-8 flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-3xl font-bold">school</span>
+                </div>
+                <h1 class="text-[#1d180c] dark:text-white text-xl font-bold tracking-tight">GCE Prep</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="h-10 w-10 rounded-full border-2 border-primary/20 bg-cover bg-center"
+                    data-alt="User profile avatar circle"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD2M9leyGvdSdyxPfxVlhiAwTuSyYp2vG0cAQWQiz-fDCB5nNk-iUwpM314o07qmmb5TlXwRmXaOWdnEWxcmZ3BtsAEhvhC4lqKIR2F2OTBI8yzVkNFdm_PrfePVB9Ziu5R2oMC4peGJ0zEaET1eiQOmChlE7M5vP7PChjb12Jsz0iqPa8t9MfBECUYiQ8guTF_IFYRjNLBPB_WRU7S3yhOyc1WQLhv1oun0ktmRIU43qcozJyjOj_lXwrdw9wHmbVquz9juLHMsfL9")'>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="flex-grow flex items-center justify-center p-6">
+        <div class="w-full max-w-[640px] flex flex-col gap-8">
+            <!-- Progress Indicator -->
+            <div class="flex flex-col gap-3 px-4">
+                <div class="flex gap-6 justify-between items-center">
+                    <p class="text-[#1d180c] dark:text-white/90 text-base font-medium">Finalizing Profile</p>
+                    <p class="text-primary text-sm font-bold">90% Complete</p>
+                </div>
+                <div class="rounded-full bg-[#eae2cd] dark:bg-white/10 overflow-hidden h-2.5">
+                    <div class="h-full rounded-full bg-primary" style="width: 90%;"></div>
+                </div>
+                <p class="text-[#a18845] dark:text-primary/70 text-sm font-normal">One step away from your personalized
+                    study plan</p>
+            </div>
+            <!-- Welcome Success Card -->
+            <div
+                class="bg-white dark:bg-white/5 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none border border-[#f4f0e6] dark:border-white/10 overflow-hidden">
+                <!-- Visual Header -->
+                <div
+                    class="w-full h-48 bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-10"
+                        style="background-image: radial-gradient(#f5b400 1px, transparent 1px); background-size: 20px 20px;">
+                    </div>
+                    <div class="relative flex flex-col items-center">
+                        <div
+                            class="bg-primary text-[#1d180c] w-16 h-16 rounded-full flex items-center justify-center shadow-lg mb-4">
+                            <span class="material-symbols-outlined text-3xl">check_circle</span>
+                        </div>
+                        <h2 class="text-2xl font-bold text-[#1d180c] dark:text-white">Account Created!</h2>
+                    </div>
+                </div>
+                <!-- Card Content -->
+                <div class="p-8 flex flex-col gap-6">
+                    <div class="text-center space-y-2">
+                        <h3 class="text-xl font-bold text-[#1d180c] dark:text-white">Welcome to GCE Prep, Alex</h3>
+                        <p class="text-[#a18845] dark:text-primary/70 text-base leading-relaxed max-w-md mx-auto">
+                            Let’s identify your weak topics and start improving. The diagnostic quiz takes only 5-10
+                            minutes and tailors the platform to your needs.
+                        </p>
+                    </div>
+                    <!-- CTA Button -->
+                    <div class="flex flex-col gap-4">
+                        <a href="{% url 'diagnostic_assessment' %}"
+                            class="w-full flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-14 bg-primary text-[#1d180c] text-lg font-bold transition-all hover:scale-[1.01] active:scale-[0.99] shadow-md shadow-primary/20">
+                            <span class="material-symbols-outlined">rocket_launch</span>
+                            <span>Start Diagnostic Quiz</span>
+                        </a>
+                        <a href="{% url 'home' %}"
+                            class="w-full h-12 flex items-center justify-center bg-transparent text-[#a18845] dark:text-primary/80 text-sm font-semibold hover:text-[#1d180c] dark:hover:text-white transition-colors">
+                            Skip for now, go to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Supporting Info -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="flex flex-col items-center text-center p-4">
+                    <span class="material-symbols-outlined text-primary mb-2">timer</span>
+                    <span class="text-[#1d180c] dark:text-white text-xs font-bold uppercase tracking-wider">5-10
+                        Mins</span>
+                    <p class="text-[#a18845] text-[10px] mt-1">Average completion time</p>
+                </div>
+                <div class="flex flex-col items-center text-center p-4">
+                    <span class="material-symbols-outlined text-primary mb-2">auto_awesome</span>
+                    <span
+                        class="text-[#1d180c] dark:text-white text-xs font-bold uppercase tracking-wider">Personalized</span>
+                    <p class="text-[#a18845] text-[10px] mt-1">AI-generated study path</p>
+                </div>
+                <div class="flex flex-col items-center text-center p-4">
+                    <span class="material-symbols-outlined text-primary mb-2">trending_up</span>
+                    <span class="text-[#1d180c] dark:text-white text-xs font-bold uppercase tracking-wider">Fast
+                        Results</span>
+                    <p class="text-[#a18845] text-[10px] mt-1">Target weak areas first</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full py-8 px-4 mt-auto">
+        <div class="max-w-4xl mx-auto flex flex-col gap-6">
+            <div
+                class="flex flex-wrap items-center justify-center gap-8 border-t border-[#f4f0e6] dark:border-white/5 pt-8">
+                <a class="text-[#a18845] dark:text-primary/60 text-sm font-medium hover:text-primary transition-colors"
+                    href="#">Privacy Policy</a>
+                <a class="text-[#a18845] dark:text-primary/60 text-sm font-medium hover:text-primary transition-colors"
+                    href="#">Terms of Service</a>
+                <a class="text-[#a18845] dark:text-primary/60 text-sm font-medium hover:text-primary transition-colors"
+                    href="#">Help Center</a>
+            </div>
+            <p class="text-[#a18845] dark:text-primary/40 text-sm text-center">© 2024 GCE Prep. All rights reserved.</p>
+        </div>
+    </footer>
+</div>
+{% endblock %}
