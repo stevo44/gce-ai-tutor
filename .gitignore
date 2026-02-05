@@ -1,0 +1,104 @@
+# ================================
+# PYTHON
+# ================================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.env/
+.venv/
+env/
+
+# Python packaging
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# ================================
+# DJANGO
+# ================================
+*.log
+local_settings.py
+db.sqlite3
+media/
+
+# Collected static files
+staticfiles/
+
+# ================================
+# TAILWIND / NODE
+# ================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Tailwind build artifacts
+theme/static_src/node_modules/
+theme/static_src/.parcel-cache/
+
+# ================================
+# ENVIRONMENT VARIABLES
+# ================================
+.env
+.env.*
+
+# ================================
+# IDE / EDITORS
+# ================================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ================================
+# OS FILES
+# ================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ================================
+# FAISS / VECTOR INDEXES
+# ================================
+*.faiss
+*.index
+*.pkl
+
+# ================================
+# MODEL FILES (VERY IMPORTANT)
+# ================================
+*.bin
+*.gguf
+*.safetensors
+models/
+checkpoints/
+
+# ================================
+# DATASETS / RAW DOCUMENTS
+# ================================
+data/
+datasets/
+raw_documents/
+uploads/
+
+# ================================
+# JUPYTER (OPTIONAL)
+# ================================
+.ipynb_checkpoints/
+
+# ================================
+# TEST / CACHE
+# ================================
+.pytest_cache/
+.cache/
+
+# ================================
+# TEMP FILES
+# ================================
+*.tmp
+*.bak
+*.swp
