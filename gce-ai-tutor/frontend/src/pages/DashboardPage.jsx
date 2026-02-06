@@ -5,19 +5,78 @@ import ChartPanel from '../components/dashboard/ChartPanel';
 import Navbar from '../components/ui/Navbar';
 
 const DashboardPage = () => {
+    // State for responsive sidebar
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+    const [isTabletExpanded, setIsTabletExpanded] = React.useState(false);
+
+    // Close mobile menu when route changes or screen resizes (optional good UX)
+    React.useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) {
+                setIsMobileMenuOpen(false);
+                setIsTabletExpanded(false); // Reset tablet state when going to desktop
+            }
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const toggleSidebar = () => {
+        if (window.innerWidth < 768) {
+            setIsMobileMenuOpen(!isMobileMenuOpen);
+        } else {
+            setIsTabletExpanded(!isTabletExpanded);
+        }
+    };
+
+    // Disable background scrolling when mobile menu is open
+    React.useEffect(() => {
+        if (isMobileMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => { document.body.style.overflow = 'unset'; };
+    }, [isMobileMenuOpen]);
+
     return (
         <div className="bg-background-light dark:bg-background-dark text-charcoal dark:text-gray-100 font-display min-h-screen">
+            {/* Mobile Overlay */}
+            {isMobileMenuOpen && (
+                <div
+                    className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    aria-hidden="true"
+                />
+            )}
+
             <div className="flex h-screen overflow-hidden">
                 {/* Sidebar Navigation */}
-                <Navbar variant="sidebar" />
+                <Navbar
+                    variant="sidebar"
+                    isMobileOpen={isMobileMenuOpen}
+                    isTabletExpanded={isTabletExpanded}
+                    onCloseMobile={() => setIsMobileMenuOpen(false)}
+                />
 
                 {/* Main Content Area */}
-                <main className="flex-1 overflow-y-auto p-8 lg:px-12">
+                <main className="flex-1 overflow-y-auto p-4 md:p-8 lg:px-12 relative w-full">
                     {/* Top Header & Stats */}
-                    <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
-                        <div>
-                            <h2 className="text-charcoal dark:text-white text-4xl font-black tracking-tight mb-2">Hello, Roland</h2>
-                            <p className="text-gray-500 dark:text-gray-400 text-lg">Ready to master your GCE subjects today?</p>
+                    <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+                        <div className="flex items-center gap-4">
+                            {/* Sidebar Toggle Button (Mobile/Tablet) */}
+                            <button
+                                onClick={toggleSidebar}
+                                className="lg:hidden p-2 rounded-lg bg-white dark:bg-gray-800 text-charcoal dark:text-white shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                                aria-label="Toggle Menu"
+                            >
+                                <span className="material-symbols-outlined">menu</span>
+                            </button>
+
+                            <div>
+                                <h2 className="text-charcoal dark:text-white text-3xl md:text-4xl font-black tracking-tight mb-1 md:mb-2">Hello, Roland</h2>
+                                <p className="text-gray-500 dark:text-gray-400 text-sm md:text-lg">Ready to master your GCE subjects today?</p>
+                            </div>
                         </div>
                         <div className="flex gap-4">
                             <div className="flex items-center gap-4 bg-white dark:bg-background-dark p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800">

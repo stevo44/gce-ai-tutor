@@ -1,45 +1,101 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Navbar = ({ variant = 'default' }) => {
+const Navbar = ({
+    variant = 'default',
+    isMobileOpen = false,
+    isTabletExpanded = false,
+    onCloseMobile = () => { }
+}) => {
     // Default navbar for authenticated/dashboard views
     if (variant === 'sidebar') {
+        const sidebarClasses = `
+            fixed md:static z-40 h-full 
+            bg-white dark:bg-background-dark border-r border-gray-200 dark:border-gray-800 
+            flex flex-col justify-between p-4 shrink-0
+            transition-all duration-300 ease-in-out
+            overflow-y-auto
+            ${isMobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0'}
+            lg:w-64
+            w-[85%] max-w-[300px]
+            ${isTabletExpanded ? 'md:w-64' : 'md:w-20 md:items-center'}
+        `;
+
+        const linkLabelClasses = `
+            transition-opacity duration-200 whitespace-nowrap
+            block
+            ${isTabletExpanded ? 'md:block' : 'md:hidden'}
+            lg:block
+        `;
+
+        const logoClasses = `
+            transition-all duration-200
+            block
+            ${isTabletExpanded ? 'md:block' : 'md:hidden'}
+            lg:block
+        `;
+
         return (
-            <aside className="w-64 bg-white dark:bg-background-dark border-r border-gray-200 dark:border-gray-800 flex flex-col justify-between p-4 shrink-0">
+            <aside className={sidebarClasses}>
                 <div className="flex flex-col gap-8">
-                    <Link to="/dashboard" className="flex items-center gap-3 px-2">
-                        <div className="bg-primary rounded-lg p-2 text-white">
+                    {/* Logo Area */}
+                    <div className={`flex items-center gap-3 px-2 ${!isTabletExpanded && 'md:justify-center lg:justify-start'}`}>
+                        <div className="bg-primary rounded-lg p-2 text-white shrink-0">
                             <span className="material-symbols-outlined">school</span>
                         </div>
-                        <div>
+                        <div className={logoClasses}>
                             <h1 className="text-primary dark:text-white text-base font-bold leading-tight">GCE Master</h1>
                             <p className="text-gray-500 dark:text-gray-400 text-xs">Prep 2024</p>
                         </div>
-                    </Link>
+                    </div>
+
+                    {/* Navigation Links */}
                     <nav className="flex flex-col gap-2">
-                        <Link className="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary font-semibold" to="/dashboard">
-                            <span className="material-symbols-outlined">dashboard</span>
-                            <span className="text-sm">Dashboard</span>
+                        <Link
+                            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'} bg-primary/10 text-primary font-semibold`}
+                            to="/dashboard"
+                            onClick={onCloseMobile}
+                        >
+                            <span className="material-symbols-outlined shrink-0">dashboard</span>
+                            <span className={linkLabelClasses}>Dashboard</span>
                         </Link>
-                        <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" to="/topics">
-                            <span className="material-symbols-outlined">book</span>
-                            <span className="text-sm font-medium">Topic Mastery</span>
+                        <Link
+                            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'} text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800`}
+                            to="/topics"
+                            onClick={onCloseMobile}
+                        >
+                            <span className="material-symbols-outlined shrink-0">book</span>
+                            <span className={linkLabelClasses}>Topic Mastery</span>
                         </Link>
-                        <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" to="/quiz">
-                            <span className="material-symbols-outlined">quiz</span>
-                            <span className="text-sm font-medium">Practice Quizzes</span>
+                        <Link
+                            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'} text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800`}
+                            to="/quiz"
+                            onClick={onCloseMobile}
+                        >
+                            <span className="material-symbols-outlined shrink-0">quiz</span>
+                            <span className={linkLabelClasses}>Practice Quizzes</span>
                         </Link>
-                        <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" to="/chat">
-                            <span className="material-symbols-outlined">smart_toy</span>
-                            <span className="text-sm font-medium">AI Tutor</span>
+                        <Link
+                            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'} text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800`}
+                            to="/chat"
+                            onClick={onCloseMobile}
+                        >
+                            <span className="material-symbols-outlined shrink-0">smart_toy</span>
+                            <span className={linkLabelClasses}>AI Tutor</span>
                         </Link>
-                        <Link className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" to="/insights">
-                            <span className="material-symbols-outlined">insights</span>
-                            <span className="text-sm font-medium">Insights</span>
+                        <Link
+                            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'} text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800`}
+                            to="/insights"
+                            onClick={onCloseMobile}
+                        >
+                            <span className="material-symbols-outlined shrink-0">insights</span>
+                            <span className={linkLabelClasses}>Insights</span>
                         </Link>
                     </nav>
                 </div>
-                <div className="flex flex-col gap-4">
+
+                {/* Bottom Stats / Footer */}
+                <div className={`flex flex-col gap-4 ${!isTabletExpanded && 'md:hidden lg:flex'}`}>
                     <div className="bg-primary/5 rounded-xl p-4 flex flex-col gap-3">
                         <p className="text-xs font-bold text-primary uppercase tracking-wider">Plan Status</p>
                         <div className="w-full bg-gray-200 rounded-full h-2">

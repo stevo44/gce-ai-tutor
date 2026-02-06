@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-load_dotenv(Path(__file__).resolve().parent.parent.parent / '.env')
+load_dotenv(Path(__file__).resolve().parent.parent.parent / '.venv')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     'agent',
     'inference_client',
     'api',
+    'qa_api',
+
 ]
 
 MIDDLEWARE = [
@@ -65,16 +67,34 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+DB_NAME='gce_ai_tutor'
+DB_USER='gce_user'
+DB_PASSWORD='StrongPassword123'
+DB_HOST='localhost'
+DB_PORT='5432'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'gce_db'),
-        'USER': os.getenv('POSTGRES_USER', 'postgres'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
-        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
+        'NAME':DB_NAME,
+        'USER':DB_USER,
+        'PASSWORD':DB_PASSWORD,
+        'HOST':DB_HOST,
+        'PORT':DB_PORT,
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('POSTGRES_DB', 'gce_db'),
+#         'USER': os.getenv('POSTGRES_USER', 'stevo'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD', '123456'),
+#         'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+#         'PORT': os.getenv('POSTGRES_PORT', '5432'),
+#     }
+# }
 
 AUTH_PASSWORD_VALIDATORS = []
 
