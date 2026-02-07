@@ -1,7 +1,9 @@
 import React from 'react';
 import ProgressBar from '../components/dashboard/ProgressBar';
+import useAuth from '../hooks/useAuth';
 
 const TopicMasteryPage = () => {
+    const { currentUser } = useAuth();
     return (
         <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
             <div className="flex h-screen overflow-hidden">
@@ -47,13 +49,13 @@ const TopicMasteryPage = () => {
                     <div className="mt-auto p-6 border-t border-slate-200 dark:border-slate-800">
                         <div className="flex items-center gap-3">
                             <div
-                                className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden"
-                                style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAL4qzJb2DV_G6_BjQwqWYG15QKJ52G_-p-VxsPrdKq6d6k8UJZLdK9zuB161UbFqM2Ig1INKz8PANCf-jviLpctJTS4fXZOXbSA-FL4sLn-WTzaDFqyKyxvYUcE3Z7vOkv2WBRFONCw0ktRj87s_vGAtRE2b6AKIRL-SbvUF9B4pzDInaHdM2idmyLrpmlD-xJq7NRHOPIkHJqOrCNai76rCEev7LaB5Ctelsl3HU8Im8WdyGZ4e45WfnpcZYep7PB3SjyM70PJA7m')", backgroundSize: 'cover' }}
+                                className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-xs"
                             >
+                                {currentUser?.displayName ? currentUser.displayName.charAt(0).toUpperCase() : (currentUser?.email ? currentUser.email.charAt(0).toUpperCase() : 'U')}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium truncate">M. Ngando</p>
-                                <p className="text-xs text-slate-500 truncate">Upper Sixth</p>
+                                <p className="text-sm font-medium truncate">{currentUser?.displayName || 'Student'}</p>
+                                <p className="text-xs text-slate-500 truncate">{currentUser?.email}</p>
                             </div>
                             <span className="material-symbols-outlined text-slate-400 text-sm">settings</span>
                         </div>

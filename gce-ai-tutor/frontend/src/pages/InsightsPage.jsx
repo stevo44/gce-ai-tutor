@@ -1,6 +1,9 @@
 import React from 'react';
 
+import useAuth from '../hooks/useAuth';
+
 const InsightsPage = () => {
+    const { currentUser } = useAuth();
     return (
         <div className="bg-background-light dark:bg-background-dark font-display text-[#101019] dark:text-white antialiased">
             <div className="flex min-h-screen flex-col">
@@ -30,7 +33,9 @@ const InsightsPage = () => {
                         <button className="p-2 rounded-lg bg-[#eae9f1] dark:bg-[#1f1f2e] text-[#101019] dark:text-white">
                             <span className="material-symbols-outlined">notifications</span>
                         </button>
-                        <div className="size-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xs">JD</div>
+                        <div className="size-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xs">
+                            {currentUser?.displayName ? currentUser.displayName.charAt(0).toUpperCase() : (currentUser?.email ? currentUser.email.charAt(0).toUpperCase() : 'U')}
+                        </div>
                     </div>
                 </header>
 
@@ -39,10 +44,12 @@ const InsightsPage = () => {
                     <aside className="w-64 border-r border-[#eae9f1] dark:border-[#2a2a3a] bg-white dark:bg-background-dark hidden lg:flex flex-col p-6">
                         <div className="flex flex-col gap-6">
                             <div className="flex gap-3 items-center p-2 rounded-xl bg-primary/5 dark:bg-primary/20">
-                                <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDstXkznWzfRzjs6j4gC3K41Y7Lez6fRh-n8brwg3cSx6lxKwiRjrenmhIbvQbQ1DsBnJIDP6Tl7XbSs8pIiYCxbEhLwmG5yRoL03pP21YncdLPCuh8fNvcpIDh0Tg3frJ_uemU5vGTGRavEeBIrQFP3B1PcZjEfp8AZ9gN7lCo9TpL8tfhMoOnaQpyw-qC1gP7u6GGKB3XkOXBES8uwa-OgvzKXaxL7HwLfuvG8N2YP0vrD5X9BPzVXLO13w1frsBsrf93YnoPxrzf")' }}></div>
+                                <div className="flex items-center justify-center bg-primary text-white font-bold text-lg aspect-square rounded-full size-10 border-2 border-primary">
+                                    {currentUser?.displayName ? currentUser.displayName.charAt(0).toUpperCase() : (currentUser?.email ? currentUser.email.charAt(0).toUpperCase() : 'U')}
+                                </div>
                                 <div className="flex flex-col overflow-hidden">
-                                    <h1 className="text-[#101019] dark:text-white text-sm font-bold truncate leading-tight">Mbi Samuel</h1>
-                                    <p className="text-[#5b5b8b] dark:text-gray-400 text-xs font-medium uppercase tracking-wider">A-Level Science</p>
+                                    <h1 className="text-[#101019] dark:text-white text-sm font-bold truncate leading-tight">{currentUser?.displayName || 'Student'}</h1>
+                                    <p className="text-[#5b5b8b] dark:text-gray-400 text-xs font-medium truncate uppercase tracking-wider">{currentUser?.email}</p>
                                 </div>
                             </div>
                             <div className="flex flex-col gap-1">

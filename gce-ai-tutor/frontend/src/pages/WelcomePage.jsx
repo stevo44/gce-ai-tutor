@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 const WelcomePage = () => {
+    const { currentUser } = useAuth();
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col transition-colors duration-300">
             {/* Top Navigation Bar */}
@@ -53,7 +55,7 @@ const WelcomePage = () => {
                         {/* Card Content */}
                         <div className="p-8 flex flex-col gap-6">
                             <div className="text-center space-y-2">
-                                <h3 className="text-xl font-bold text-[#101019] dark:text-white">Welcome to GCE Prep, Alex</h3>
+                                <h3 className="text-xl font-bold text-[#101019] dark:text-white">Welcome to GCE Prep, {currentUser?.displayName?.split(' ')[0] || 'Student'}</h3>
                                 <p className="text-[#5b5b8b] dark:text-primary/70 text-base leading-relaxed max-w-md mx-auto">
                                     Let's identify your weak topics and start improving. The diagnostic quiz takes only 5-10 minutes and tailors the platform to your needs.
                                 </p>

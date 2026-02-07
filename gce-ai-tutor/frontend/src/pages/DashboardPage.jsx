@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 import StatCard from '../components/dashboard/StatCard';
 import ChartPanel from '../components/dashboard/ChartPanel';
 import Navbar from '../components/ui/Navbar';
 
 const DashboardPage = () => {
+    const { currentUser } = useAuth();
     // State for responsive sidebar
     const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
     const [isTabletExpanded, setIsTabletExpanded] = React.useState(false);
@@ -74,7 +76,9 @@ const DashboardPage = () => {
                             </button>
 
                             <div>
-                                <h2 className="text-charcoal dark:text-white text-3xl md:text-4xl font-black tracking-tight mb-1 md:mb-2">Hello, Roland</h2>
+                                <h2 className="text-charcoal dark:text-white text-3xl md:text-4xl font-black tracking-tight mb-1 md:mb-2">
+                                    Hello, {currentUser?.displayName?.split(' ')[0] || 'Student'}
+                                </h2>
                                 <p className="text-gray-500 dark:text-gray-400 text-sm md:text-lg">Ready to master your GCE subjects today?</p>
                             </div>
                         </div>
