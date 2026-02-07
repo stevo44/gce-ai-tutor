@@ -1,19 +1,33 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import AuthForm from '../components/auth/AuthForm';
+import useAuth from '../hooks/useAuth';
 
 const LoginPage = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { login, error: authError } = useAuth();
+
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+
     const formFields = [
         {
             label: 'Email Address',
             icon: 'alternate_email',
             type: 'email',
+            name: 'email',
             placeholder: 'e.g. alex.student@example.com'
         },
         {
             label: 'Password',
             icon: 'key',
             type: 'password',
+            name: 'password',
             placeholder: '••••••••',
             helperLink: {
                 text: 'Forgot password?',
@@ -21,6 +35,40 @@ const LoginPage = () => {
             }
         }
     ];
+
+    const handleFieldChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+        setError(''); // Clear error when user types
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+        setLoading(true);
+
+        try {
+            await login(formData.email, formData.password);
+            // Redirect to the page they tried to visit or dashboard
+            const from = location.state?.from?.pathname || '/dashboard';
+            navigate(from, { replace: true });
+        } catch (err) {
+            // Provide user-friendly error messages
+            if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+                setError('Invalid email or password. Please try again.');
+            } else if (err.code === 'auth/too-many-requests') {
+                setError('Too many failed login attempts. Please try again later.');
+            } else if (err.code === 'auth/invalid-credential') {
+                setError('Invalid email or password. Please try again.');
+            } else {
+                setError(err.message || 'Failed to log in. Please try again.');
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden">
@@ -55,6 +103,11 @@ const LoginPage = () => {
                         footerText="New to GCE Prep?"
                         footerLinkText="Create an account"
                         footerLinkHref="/register"
+                        onSubmit={handleSubmit}
+                        error={error || authError}
+                        loading={loading}
+                        formData={formData}
+                        onFieldChange={handleFieldChange}
                     />
 
                     {/* Secondary Footer Links */}

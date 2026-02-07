@@ -1,7 +1,80 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 const RegisterPage = () => {
+    const navigate = useNavigate();
+    const { register, error: authError } = useAuth();
+
+    const [formData, setFormData] = useState({
+        fullName: '',
+        email: '',
+        password: '',
+        examLevel: 'ordinary',
+        subjects: ['Mathematics', 'Physics', 'Chemistry']
+    });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [subjectInput, setSubjectInput] = useState('');
+
+    const handleInputChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+        setError('');
+    };
+
+    const handleRemoveSubject = (subjectToRemove) => {
+        setFormData({
+            ...formData,
+            subjects: formData.subjects.filter(subject => subject !== subjectToRemove)
+        });
+    };
+
+    const handleAddSubject = (e) => {
+        if (e.key === 'Enter' && subjectInput.trim()) {
+            e.preventDefault();
+            if (!formData.subjects.includes(subjectInput.trim())) {
+                setFormData({
+                    ...formData,
+                    subjects: [...formData.subjects, subjectInput.trim()]
+                });
+            }
+            setSubjectInput('');
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+        setLoading(true);
+
+        try {
+            // Register user with Firebase
+            await register(formData.email, formData.password, formData.fullName);
+
+            // TODO: Store additional user data (examLevel, subjects) in Firestore
+            // This will be implemented in a future enhancement
+
+            // Redirect to welcome page
+            navigate('/welcome', { replace: true });
+        } catch (err) {
+            // Provide user-friendly error messages
+            if (err.code === 'auth/email-already-in-use') {
+                setError('This email is already registered. Please log in instead.');
+            } else if (err.code === 'auth/weak-password') {
+                setError('Password should be at least 6 characters long.');
+            } else if (err.code === 'auth/invalid-email') {
+                setError('Please enter a valid email address.');
+            } else {
+                setError(err.message || 'Failed to create account. Please try again.');
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col transition-colors duration-300">
             {/* Header */}
@@ -35,7 +108,15 @@ const RegisterPage = () => {
                         <p className="text-gray-500 dark:text-gray-400 text-base">Start your journey to academic excellence.</p>
                     </div>
 
-                    <form className="px-8 pb-10 space-y-5">
+                    {/* Error Message */}
+                    {(error || authError) && (
+                        <div className="mx-8 mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-start gap-2">
+                            <span className="material-symbols-outlined text-red-600 dark:text-red-400 text-sm mt-0.5">error</span>
+                            <p className="text-sm text-red-600 dark:text-red-400">{error || authError}</p>
+                        </div>
+                    )}
+
+                    <form className="px-8 pb-10 space-y-5" onSubmit={handleSubmit}>
                         {/* Full Name */}
                         <div className="flex flex-col gap-1.5">
                             <label className="text-gray-800 dark:text-gray-200 text-sm font-semibold">Full Name</label>
@@ -45,6 +126,11 @@ const RegisterPage = () => {
                                     className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-background-light dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-gray-400"
                                     placeholder="e.g. John Doe"
                                     type="text"
+                                    name="fullName"
+                                    value={formData.fullName}
+                                    onChange={handleInputChange}
+                                    required
+                                    disabled={loading}
                                 />
                             </div>
                         </div>
@@ -58,6 +144,11 @@ const RegisterPage = () => {
                                     className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-background-light dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-gray-400"
                                     placeholder="name@example.com"
                                     type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    required
+                                    disabled={loading}
                                 />
                             </div>
                         </div>
@@ -72,6 +163,12 @@ const RegisterPage = () => {
                                         className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-background-light dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-gray-400"
                                         placeholder="••••••••"
                                         type="password"
+                                        name="password"
+                                        value={formData.password}
+                                        onChange={handleInputChange}
+                                        required
+                                        minLength={6}
+                                        disabled={loading}
                                     />
                                 </div>
                             </div>
@@ -79,7 +176,13 @@ const RegisterPage = () => {
                                 <label className="text-gray-800 dark:text-gray-200 text-sm font-semibold">Exam Level</label>
                                 <div className="relative">
                                     <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl">school</span>
-                                    <select className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-background-light dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none cursor-pointer">
+                                    <select
+                                        className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-background-light dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none cursor-pointer"
+                                        name="examLevel"
+                                        value={formData.examLevel}
+                                        onChange={handleInputChange}
+                                        disabled={loading}
+                                    >
                                         <option value="ordinary">Ordinary Level</option>
                                         <option value="advanced">Advanced Level</option>
                                     </select>
@@ -96,19 +199,25 @@ const RegisterPage = () => {
                             </div>
                             <div className="min-h-[100px] w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-background-light dark:bg-gray-800 flex flex-wrap gap-2 content-start">
                                 {/* Chips */}
-                                <div className="flex items-center gap-1.5 bg-primary/10 border border-primary/20 text-primary dark:text-primary/90 px-3 py-1 rounded-full text-xs font-medium">
-                                    Mathematics <span className="material-symbols-outlined text-sm cursor-pointer hover:text-red-500 transition-colors">close</span>
-                                </div>
-                                <div className="flex items-center gap-1.5 bg-primary/10 border border-primary/20 text-primary dark:text-primary/90 px-3 py-1 rounded-full text-xs font-medium">
-                                    Physics <span className="material-symbols-outlined text-sm cursor-pointer hover:text-red-500 transition-colors">close</span>
-                                </div>
-                                <div className="flex items-center gap-1.5 bg-primary/10 border border-primary/20 text-primary dark:text-primary/90 px-3 py-1 rounded-full text-xs font-medium">
-                                    Chemistry <span className="material-symbols-outlined text-sm cursor-pointer hover:text-red-500 transition-colors">close</span>
-                                </div>
+                                {formData.subjects.map((subject, index) => (
+                                    <div key={index} className="flex items-center gap-1.5 bg-primary/10 border border-primary/20 text-primary dark:text-primary/90 px-3 py-1 rounded-full text-xs font-medium">
+                                        {subject}
+                                        <span
+                                            className="material-symbols-outlined text-sm cursor-pointer hover:text-red-500 transition-colors"
+                                            onClick={() => handleRemoveSubject(subject)}
+                                        >
+                                            close
+                                        </span>
+                                    </div>
+                                ))}
                                 <input
                                     className="bg-transparent border-none focus:ring-0 p-0 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 w-24"
                                     placeholder="Add more..."
                                     type="text"
+                                    value={subjectInput}
+                                    onChange={(e) => setSubjectInput(e.target.value)}
+                                    onKeyDown={handleAddSubject}
+                                    disabled={loading}
                                 />
                             </div>
                             <p className="text-[12px] text-gray-500 italic mt-1 px-1 flex items-center gap-1">
@@ -120,11 +229,21 @@ const RegisterPage = () => {
                         {/* Submit Button */}
                         <div className="pt-4">
                             <button
-                                className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 group"
+                                className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
                                 type="submit"
+                                disabled={loading}
                             >
-                                Create Account
-                                <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                {loading ? (
+                                    <>
+                                        <div className="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                                        <span>Creating Account...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        Create Account
+                                        <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    </>
+                                )}
                             </button>
                         </div>
 
@@ -132,7 +251,7 @@ const RegisterPage = () => {
                         <div className="text-center pt-4">
                             <p className="text-sm text-gray-500 dark:text-gray-400">
                                 Already have an account?
-                                <Link className="text-primary font-semibold hover:underline" to="/login">Log in</Link>
+                                <Link className="text-primary font-semibold hover:underline" to="/login"> Log in</Link>
                             </p>
                         </div>
                     </form>
@@ -152,3 +271,6 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
+
+
+

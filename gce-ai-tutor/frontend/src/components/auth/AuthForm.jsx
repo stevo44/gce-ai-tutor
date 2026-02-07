@@ -9,8 +9,20 @@ const AuthForm = ({
     submitText = 'Submit',
     footerText,
     footerLinkText,
-    footerLinkHref = '#'
+    footerLinkHref = '#',
+    onSubmit,
+    error,
+    loading = false,
+    formData = {},
+    onFieldChange
 }) => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (onSubmit) {
+            onSubmit(e);
+        }
+    };
+
     return (
         <div className="bg-white dark:bg-white/5 p-8 rounded-xl shadow-xl shadow-primary/5 border border-[#e9e7f3] dark:border-white/10">
             {/* Header Section */}
@@ -26,8 +38,16 @@ const AuthForm = ({
                 )}
             </div>
 
+            {/* Error Message */}
+            {error && (
+                <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-start gap-2">
+                    <span className="material-symbols-outlined text-red-600 dark:text-red-400 text-sm mt-0.5">error</span>
+                    <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+                </div>
+            )}
+
             {/* Form */}
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit}>
                 {fields.map((field, index) => (
                     <div key={index} className="flex flex-col gap-2">
                         <div className="flex justify-between items-center">
@@ -47,6 +67,11 @@ const AuthForm = ({
                             className="form-input flex w-full rounded-lg text-charcoal dark:text-white border border-[#d3cfe7] dark:border-white/20 bg-transparent focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4 text-base font-normal placeholder:text-gray-400"
                             placeholder={field.placeholder}
                             type={field.type || 'text'}
+                            name={field.name}
+                            value={formData[field.name] || ''}
+                            onChange={onFieldChange}
+                            required
+                            disabled={loading}
                         />
                     </div>
                 ))}
@@ -57,6 +82,7 @@ const AuthForm = ({
                         className="rounded border-gray-300 text-primary focus:ring-primary h-4 w-4"
                         id="remember"
                         type="checkbox"
+                        disabled={loading}
                     />
                     <label className="text-sm text-gray-600 dark:text-gray-400 cursor-pointer" htmlFor="remember">
                         Stay logged in for 30 days
@@ -65,10 +91,18 @@ const AuthForm = ({
 
                 {/* Submit Button */}
                 <button
-                    className="w-full h-12 bg-primary hover:bg-primary/90 text-white rounded-lg font-bold text-base shadow-lg shadow-primary/25 transition-all active:scale-[0.98] mt-2"
+                    className="w-full h-12 bg-primary hover:bg-primary/90 text-white rounded-lg font-bold text-base shadow-lg shadow-primary/25 transition-all active:scale-[0.98] mt-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     type="submit"
+                    disabled={loading}
                 >
-                    {submitText}
+                    {loading ? (
+                        <>
+                            <div className="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                            <span>Please wait...</span>
+                        </>
+                    ) : (
+                        submitText
+                    )}
                 </button>
             </form>
 
