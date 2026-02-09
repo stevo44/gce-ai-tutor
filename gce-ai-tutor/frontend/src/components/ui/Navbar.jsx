@@ -1,8 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
 
 const Navbar = ({
     variant = 'default',
@@ -25,7 +23,7 @@ const Navbar = ({
     // Default navbar for authenticated/dashboard views
     if (variant === 'sidebar') {
         const sidebarClasses = `
-            fixed md:static z-40 h-full 
+            fixed md:static z-50 h-full 
             bg-white dark:bg-background-dark border-r border-gray-200 dark:border-gray-800 
             flex flex-col justify-between p-4 shrink-0
             transition-all duration-300 ease-in-out
@@ -50,6 +48,14 @@ const Navbar = ({
             lg:block
         `;
 
+        // Helper for active link styling
+        const getLinkClasses = ({ isActive }) => {
+            const baseClasses = `flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'}`;
+            const activeClasses = "bg-primary/10 text-primary font-semibold";
+            const inactiveClasses = "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800";
+            return `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`;
+        };
+
         return (
             <aside className={sidebarClasses}>
                 <div className="flex flex-col gap-8">
@@ -66,46 +72,55 @@ const Navbar = ({
 
                     {/* Navigation Links */}
                     <nav className="flex flex-col gap-2">
-                        <Link
-                            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'} bg-primary/10 text-primary font-semibold`}
+                        <NavLink
+                            className={getLinkClasses}
                             to="/dashboard"
                             onClick={onCloseMobile}
+                            end
                         >
                             <span className="material-symbols-outlined shrink-0">dashboard</span>
                             <span className={linkLabelClasses}>Dashboard</span>
-                        </Link>
-                        <Link
-                            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'} text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800`}
+                        </NavLink>
+                        <NavLink
+                            className={getLinkClasses}
                             to="/topics"
                             onClick={onCloseMobile}
                         >
                             <span className="material-symbols-outlined shrink-0">book</span>
                             <span className={linkLabelClasses}>Topic Mastery</span>
-                        </Link>
-                        <Link
-                            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'} text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800`}
+                        </NavLink>
+                        <NavLink
+                            className={getLinkClasses}
                             to="/quiz"
                             onClick={onCloseMobile}
                         >
                             <span className="material-symbols-outlined shrink-0">quiz</span>
                             <span className={linkLabelClasses}>Practice Quizzes</span>
-                        </Link>
-                        <Link
-                            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'} text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800`}
+                        </NavLink>
+                        <NavLink
+                            className={getLinkClasses}
                             to="/chat"
                             onClick={onCloseMobile}
                         >
                             <span className="material-symbols-outlined shrink-0">smart_toy</span>
                             <span className={linkLabelClasses}>AI Tutor</span>
-                        </Link>
-                        <Link
-                            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'} text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800`}
+                        </NavLink>
+                        <NavLink
+                            className={getLinkClasses}
                             to="/insights"
                             onClick={onCloseMobile}
                         >
                             <span className="material-symbols-outlined shrink-0">insights</span>
                             <span className={linkLabelClasses}>Insights</span>
-                        </Link>
+                        </NavLink>
+                        <NavLink
+                            className={getLinkClasses}
+                            to="/past-papers"
+                            onClick={onCloseMobile}
+                        >
+                            <span className="material-symbols-outlined shrink-0">description</span>
+                            <span className={linkLabelClasses}>Past Papers</span>
+                        </NavLink>
                     </nav>
                 </div>
 
