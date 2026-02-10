@@ -15,12 +15,23 @@ const client = axios.create({
 // 2. REQUEST INTERCEPTOR
 // Attached JWT token to every request if available
 // ============================================
+import { auth } from '../firebase';
+
 client.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem('access_token');
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+    async (config) => {
+        // Get the current user from Firebase Auth
+        const user = auth.currentUser;
+
+        if (user) {
+            try {
+                // Get the ID token (forceRefresh = false)
+                const token = await user.getIdToken();
+                config.headers.Authorization = `Bearer ${token}`;
+            } catch (error) {
+                console.error("Error getting auth token:", error);
+            }
         }
+
         return config;
     },
     (error) => {
@@ -37,13 +48,13 @@ client.interceptors.response.use(
         return response;
     },
     (error) => {
-        // Handle 401: Unauthorized (Token expired or invalid)
+        // Handle 401: Unauthorized
         if (error.response && error.response.status === 401) {
-            // Prevent infinite loop if already on login page
-            if (!window.location.pathname.includes('/login')) {
-                localStorage.removeItem('access_token'); // Clear invalid token
-                window.location.href = '/login'; // Redirect to login
-            }
+            // Firebase handles token refresh automatically, but if we get a 401,
+            // it might mean the user is disabled or deleted.
+            // We can optionally redirect to login here if needed, but typically
+            // the auth state listener in AuthContext will handle logout.
+            console.error("Unauthorized access:", error);
         }
 
         // Return a meaningful error object

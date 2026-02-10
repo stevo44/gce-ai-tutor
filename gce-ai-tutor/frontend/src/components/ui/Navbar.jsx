@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
 const Navbar = ({
     variant = 'default',
@@ -7,10 +8,22 @@ const Navbar = ({
     isTabletExpanded = false,
     onCloseMobile = () => { }
 }) => {
+    const { currentUser, logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            navigate('/');
+        } catch (error) {
+            console.error("Failed to log out", error);
+        }
+    };
+
     // Default navbar for authenticated/dashboard views
     if (variant === 'sidebar') {
         const sidebarClasses = `
-            fixed md:static z-40 h-full 
+            fixed md:static z-50 h-full 
             bg-white dark:bg-background-dark border-r border-gray-200 dark:border-gray-800 
             flex flex-col justify-between p-4 shrink-0
             transition-all duration-300 ease-in-out
@@ -35,6 +48,14 @@ const Navbar = ({
             lg:block
         `;
 
+        // Helper for active link styling
+        const getLinkClasses = ({ isActive }) => {
+            const baseClasses = `flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'}`;
+            const activeClasses = "bg-primary/10 text-primary font-semibold";
+            const inactiveClasses = "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800";
+            return `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`;
+        };
+
         return (
             <aside className={sidebarClasses}>
                 <div className="flex flex-col gap-8">
@@ -51,61 +72,79 @@ const Navbar = ({
 
                     {/* Navigation Links */}
                     <nav className="flex flex-col gap-2">
-                        <Link
-                            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'} bg-primary/10 text-primary font-semibold`}
+                        <NavLink
+                            className={getLinkClasses}
                             to="/dashboard"
                             onClick={onCloseMobile}
+                            end
                         >
                             <span className="material-symbols-outlined shrink-0">dashboard</span>
                             <span className={linkLabelClasses}>Dashboard</span>
-                        </Link>
-                        <Link
-                            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'} text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800`}
+                        </NavLink>
+                        <NavLink
+                            className={getLinkClasses}
                             to="/topics"
                             onClick={onCloseMobile}
                         >
                             <span className="material-symbols-outlined shrink-0">book</span>
                             <span className={linkLabelClasses}>Topic Mastery</span>
-                        </Link>
-                        <Link
-                            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'} text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800`}
+                        </NavLink>
+                        <NavLink
+                            className={getLinkClasses}
                             to="/quiz"
                             onClick={onCloseMobile}
                         >
                             <span className="material-symbols-outlined shrink-0">quiz</span>
                             <span className={linkLabelClasses}>Practice Quizzes</span>
-                        </Link>
-                        <Link
-                            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'} text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800`}
+                        </NavLink>
+                        <NavLink
+                            className={getLinkClasses}
                             to="/chat"
                             onClick={onCloseMobile}
                         >
                             <span className="material-symbols-outlined shrink-0">smart_toy</span>
                             <span className={linkLabelClasses}>AI Tutor</span>
-                        </Link>
-                        <Link
-                            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'} text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800`}
+                        </NavLink>
+                        <NavLink
+                            className={getLinkClasses}
                             to="/insights"
                             onClick={onCloseMobile}
                         >
                             <span className="material-symbols-outlined shrink-0">insights</span>
                             <span className={linkLabelClasses}>Insights</span>
-                        </Link>
+                        </NavLink>
+                        <NavLink
+                            className={getLinkClasses}
+                            to="/past-papers"
+                            onClick={onCloseMobile}
+                        >
+                            <span className="material-symbols-outlined shrink-0">description</span>
+                            <span className={linkLabelClasses}>Past Papers</span>
+                        </NavLink>
                     </nav>
                 </div>
 
-                {/* Bottom Stats / Footer */}
-                <div className={`flex flex-col gap-4 ${!isTabletExpanded && 'md:hidden lg:flex'}`}>
-                    <div className="bg-primary/5 rounded-xl p-4 flex flex-col gap-3">
-                        <p className="text-xs font-bold text-primary uppercase tracking-wider">Plan Status</p>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div className="bg-primary h-2 rounded-full" style={{ width: '72%' }}></div>
+                {/* User Profile / Logout */}
+                <div className={`flex flex-col gap-4 mt-auto ${!isTabletExpanded && 'md:hidden lg:flex'}`}>
+                    <div className="bg-primary/5 rounded-xl p-4 flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                            {currentUser?.displayName ? currentUser.displayName.charAt(0).toUpperCase() : (currentUser?.email ? currentUser.email.charAt(0).toUpperCase() : 'U')}
                         </div>
-                        <p className="text-xs text-gray-500">72% Syllabus covered</p>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm font-bold text-charcoal dark:text-white truncate">
+                                {currentUser?.displayName || 'Student'}
+                            </p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                                {currentUser?.email}
+                            </p>
+                        </div>
                     </div>
-                    <button className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center justify-center gap-2">
-                        <span className="material-symbols-outlined text-sm">event_note</span>
-                        <span>Study Planner</span>
+                    <button
+                        onClick={handleLogout}
+                        className="w-full bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 font-bold py-2 px-4 rounded-lg transition-all flex items-center justify-center gap-2"
+                    >
+                        <span className="material-symbols-outlined text-sm">logout</span>
+                        <span>Sign Out</span>
                     </button>
                 </div>
             </aside>
@@ -128,13 +167,26 @@ const Navbar = ({
                     <nav className="hidden md:flex items-center gap-9">
                         <a className="text-[#101910] dark:text-white/80 text-sm font-medium hover:text-primary transition-colors" href="#features">Features</a>
                         <a className="text-[#101910] dark:text-white/80 text-sm font-medium hover:text-primary transition-colors" href="#how-it-works">How It Works</a>
-                        <Link className="text-[#101910] dark:text-white/80 text-sm font-medium hover:text-primary transition-colors" to="/login">Login</Link>
+                        {currentUser ? (
+                            <Link className="text-[#101910] dark:text-white/80 text-sm font-medium hover:text-primary transition-colors" to="/dashboard">Dashboard</Link>
+                        ) : (
+                            <Link className="text-[#101910] dark:text-white/80 text-sm font-medium hover:text-primary transition-colors" to="/login">Login</Link>
+                        )}
                     </nav>
-                    <Link to="/register">
-                        <button className="flex min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 text-sm font-bold leading-normal tracking-[0.015em] transition-all bg-primary text-white hover:opacity-90">
-                            <span className="truncate">Get Started</span>
+                    {currentUser ? (
+                        <button
+                            onClick={handleLogout}
+                            className="flex min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 text-sm font-bold leading-normal tracking-[0.015em] transition-all bg-gray-100 text-charcoal hover:bg-gray-200 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+                        >
+                            <span className="truncate">Sign Out</span>
                         </button>
-                    </Link>
+                    ) : (
+                        <Link to="/register">
+                            <button className="flex min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 text-sm font-bold leading-normal tracking-[0.015em] transition-all bg-primary text-white hover:opacity-90">
+                                <span className="truncate">Get Started</span>
+                            </button>
+                        </Link>
+                    )}
                 </div>
             </div>
         </header>

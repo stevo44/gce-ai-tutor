@@ -1,30 +1,42 @@
 import React from 'react';
+import { useOutletContext } from 'react-router-dom';
 import Timer from '../components/quiz/Timer';
 import QuestionCard from '../components/quiz/QuestionCard';
 
 const QuizPage = () => {
+    const { toggleSidebar } = useOutletContext() || {};
+
     return (
-        <div className="bg-background-light dark:bg-background-dark min-h-screen text-[#101019] dark:text-[#f9f9fb] transition-colors duration-200">
+        <div className="bg-background-light dark:bg-background-dark min-h-full text-[#101019] dark:text-[#f9f9fb] transition-colors duration-200 flex flex-col">
             {/* Progress Bar at the very top */}
-            <div className="fixed top-0 left-0 w-full h-1 bg-[#d4d4e3] dark:bg-gray-800 z-50">
+            <div className="sticky top-0 left-0 w-full h-1 bg-[#d4d4e3] dark:bg-gray-800 z-40">
                 <div className="h-full bg-primary" style={{ width: '45%' }}></div>
             </div>
 
             {/* Top Navigation Bar */}
-            <header className="sticky top-0 z-40 w-full border-b border-[#eae9f1] dark:border-gray-800 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 py-3">
+            <header className="sticky top-1 z-30 w-full border-b border-[#eae9f1] dark:border-gray-800 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-4 md:px-6 py-3">
                 <div className="max-w-[960px] mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="bg-primary/10 p-2 rounded-lg">
+                        {/* Toggle Button for Mobile */}
+                        <button
+                            onClick={toggleSidebar}
+                            className="lg:hidden p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                            aria-label="Toggle Menu"
+                        >
+                            <span className="material-symbols-outlined">menu</span>
+                        </button>
+
+                        <div className="bg-primary/10 p-2 rounded-lg hidden sm:block">
                             <span className="material-symbols-outlined text-primary">science</span>
                         </div>
                         <div>
-                            <h2 className="text-[#101019] dark:text-[#f9f9fb] text-lg font-bold leading-tight tracking-tight">GCE 2023 Chemistry Paper 1</h2>
+                            <h2 className="text-[#101019] dark:text-[#f9f9fb] text-sm md:text-lg font-bold leading-tight tracking-tight line-clamp-1">GCE 2023 Chemistry Paper 1</h2>
                             <p className="text-xs text-gray-500 dark:text-gray-400">Question 18 of 40</p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 md:gap-4">
                         <Timer time="00:24:55" />
-                        <button className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all">
+                        <button className="bg-primary hover:bg-primary/90 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap">
                             Finish Session
                         </button>
                     </div>
@@ -32,7 +44,7 @@ const QuizPage = () => {
             </header>
 
             {/* Main Question Area */}
-            <main className="max-w-[800px] mx-auto px-6 py-12">
+            <main className="flex-1 max-w-[800px] w-full mx-auto px-4 md:px-6 py-8 md:py-12 pb-24">
                 {/* Question Content */}
                 <QuestionCard
                     question="Which of the following elements has the highest electronegativity?"
@@ -98,9 +110,9 @@ const QuizPage = () => {
                             </div>
 
                             {/* AI Tutor Call to Action */}
-                            <div className="mt-6 flex items-center justify-between bg-white dark:bg-gray-900/50 p-4 rounded-lg border border-[#eae9f1] dark:border-gray-800">
+                            <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white dark:bg-gray-900/50 p-4 rounded-lg border border-[#eae9f1] dark:border-gray-800 gap-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="size-10 rounded-full bg-gradient-to-tr from-primary to-purple-500 flex items-center justify-center text-white">
+                                    <div className="size-10 rounded-full bg-gradient-to-tr from-primary to-purple-500 flex items-center justify-center text-white shrink-0">
                                         <span className="material-symbols-outlined">psychology</span>
                                     </div>
                                     <div>
@@ -108,7 +120,7 @@ const QuizPage = () => {
                                         <p className="text-xs text-gray-500">Ask the AI Tutor to explain like you're 5.</p>
                                     </div>
                                 </div>
-                                <button className="bg-primary/10 hover:bg-primary/20 text-primary px-4 py-2 rounded-lg text-xs font-bold transition-all">
+                                <button className="bg-primary/10 hover:bg-primary/20 text-primary px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap self-end sm:self-auto">
                                     Ask AI Tutor
                                 </button>
                             </div>
@@ -126,7 +138,7 @@ const QuizPage = () => {
             </main>
 
             {/* Footer for keyboard shortcuts */}
-            <footer className="fixed bottom-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-white/50 dark:bg-black/20 backdrop-blur rounded-full border border-gray-200 dark:border-gray-800 hidden md:block">
+            <footer className="fixed bottom-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-white/50 dark:bg-black/20 backdrop-blur rounded-full border border-gray-200 dark:border-gray-800 hidden md:block z-30">
                 <div className="flex gap-4 text-[10px] text-gray-500 uppercase tracking-widest font-bold">
                     <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded border border-gray-300 dark:border-gray-700">1-4</kbd> Select</span>
                     <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded border border-gray-300 dark:border-gray-700">Enter</kbd> Submit</span>
