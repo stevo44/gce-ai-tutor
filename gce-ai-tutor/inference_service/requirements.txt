@@ -4,3 +4,4 @@ torch
 transformers
 # vllm  <-- Note: vLLM is Linux-only. Uncomment for production/Linux.
 pydantic
+llama-cpp-python

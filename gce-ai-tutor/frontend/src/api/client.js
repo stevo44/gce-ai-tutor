@@ -85,10 +85,10 @@ export const getTopics = async () => {
     return response.data;
 };
 
-// --- Chat ---
-export const askQuestion = async (messageData) => {
-    // messageData: { message, topic_id (optional) }
-    const response = await client.post('chat/ask/', messageData);
+// --- Chat / Ask Question ---
+export const askQuestion = async (question) => {
+    // question: string
+    const response = await client.post('qa_api/ask/', { question });
     return response.data;
 };
 
