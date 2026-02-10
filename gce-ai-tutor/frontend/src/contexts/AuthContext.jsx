@@ -5,7 +5,9 @@ import {
     signOut,
     onAuthStateChanged,
     sendPasswordResetEmail,
-    updateProfile
+    updateProfile,
+    updateEmail,
+    updatePassword
 } from 'firebase/auth';
 import { auth } from '../firebase';
 
@@ -65,6 +67,37 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const updateUserProfile = async (data) => {
+        try {
+            setError(null);
+            await updateProfile(auth.currentUser, data);
+            // Force refresh user state if needed, or rely on onAuthStateChanged
+        } catch (err) {
+            setError(err.message);
+            throw err;
+        }
+    };
+
+    const updateUserEmail = async (email) => {
+        try {
+            setError(null);
+            await updateEmail(auth.currentUser, email);
+        } catch (err) {
+            setError(err.message);
+            throw err;
+        }
+    };
+
+    const updateUserPassword = async (password) => {
+        try {
+            setError(null);
+            await updatePassword(auth.currentUser, password);
+        } catch (err) {
+            setError(err.message);
+            throw err;
+        }
+    };
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user);
@@ -81,7 +114,11 @@ export const AuthProvider = ({ children }) => {
         register,
         login,
         logout,
-        resetPassword
+        logout,
+        resetPassword,
+        updateUserProfile,
+        updateUserEmail,
+        updateUserPassword
     };
 
     return (

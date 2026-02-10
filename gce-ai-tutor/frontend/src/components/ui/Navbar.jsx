@@ -118,6 +118,14 @@ const Navbar = ({
                             <span className="material-symbols-outlined shrink-0">description</span>
                             <span className={linkLabelClasses}>Past Papers</span>
                         </NavLink>
+                        <NavLink
+                            className={getLinkClasses}
+                            to="/settings"
+                            onClick={onCloseMobile}
+                        >
+                            <span className="material-symbols-outlined shrink-0">settings</span>
+                            <span className={linkLabelClasses}>Settings</span>
+                        </NavLink>
                     </nav>
                 </div>
 

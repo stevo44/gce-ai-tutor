@@ -15,6 +15,7 @@ import QuizPage from './pages/QuizPage';
 import InsightsPage from './pages/InsightsPage';
 import ChatPage from './pages/ChatPage';
 import PastPapersPage from './pages/PastPapersPage';
+import SettingsPage from './pages/SettingsPage';
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
               <Route path="/insights" element={<InsightsPage />} />
               <Route path="/chat" element={<ChatPage />} />
               <Route path="/past-papers" element={<PastPapersPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/" replace />} />
