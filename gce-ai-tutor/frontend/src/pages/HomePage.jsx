@@ -103,6 +103,75 @@ const HomePage = () => {
                     </div>
                 </section>
 
+                {/* Past Questions Highlight Section */}
+                <section className="py-20 bg-primary/5">
+                    <div className="max-w-[1200px] mx-auto px-4 md:px-20 lg:px-40">
+                        <div className="flex flex-col lg:flex-row items-center gap-12">
+                            <div className="lg:w-1/2 space-y-6">
+                                <span className="text-primary font-bold text-sm tracking-widest uppercase mb-2 block">Extensive Library</span>
+                                <h2 className="text-[#101910] dark:text-white text-4xl md:text-5xl font-black leading-tight tracking-tight">
+                                    Unlock 10 Years of GCE Past Papers.
+                                </h2>
+                                <p className="text-gray-600 dark:text-white/70 text-lg leading-relaxed">
+                                    Practice with real exam questions from the Cameroon General Certificate of Education. From Biology to Pure Maths, we've got the most comprehensive bank of past questions available.
+                                </p>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                                    <div className="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-background-dark/30 border border-primary/10">
+                                        <span className="material-symbols-outlined text-primary">verified</span>
+                                        <span className="text-sm font-bold dark:text-white">Official Marking Schemes</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-background-dark/30 border border-primary/10">
+                                        <span className="material-symbols-outlined text-primary">psychology</span>
+                                        <span className="text-sm font-bold dark:text-white">AI Step-by-Step Solutions</span>
+                                    </div>
+                                </div>
+                                <div className="pt-6">
+                                    <Link to="/register">
+                                        <Button className="h-12 px-8">Browse the Question Bank</Button>
+                                    </Link>
+                                </div>
+                            </div>
+                            <div className="lg:w-1/2">
+                                <div className="relative group">
+                                    <div className="absolute -inset-1 bg-gradient-to-r from-primary to-soft-teal rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity"></div>
+                                    <div className="relative bg-white dark:bg-background-dark p-8 rounded-2xl border border-gray-100 dark:border-white/10 shadow-xl overflow-hidden">
+                                        <div className="flex justify-between items-start mb-6">
+                                            <div className="space-y-1">
+                                                <h3 className="font-black text-2xl dark:text-white">Chemistry Paper 1</h3>
+                                                <p className="text-sm text-gray-500 font-medium">Advanced Level • 2023</p>
+                                            </div>
+                                            <div className="bg-primary/10 p-2 rounded-lg">
+                                                <span className="material-symbols-outlined text-primary">history_edu</span>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-4 mb-8">
+                                            <div className="h-2 w-3/4 bg-gray-100 dark:bg-gray-800 rounded"></div>
+                                            <div className="h-2 w-full bg-gray-100 dark:bg-gray-800 rounded"></div>
+                                            <div className="h-2 w-5/6 bg-gray-100 dark:bg-gray-800 rounded"></div>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-3 mb-8">
+                                            {[1, 2, 3, 4].map((i) => (
+                                                <div key={i} className="h-10 border-2 border-dashed border-gray-100 dark:border-gray-800 rounded-lg"></div>
+                                            ))}
+                                        </div>
+                                        <div className="flex items-center justify-between pt-6 border-t border-gray-50 dark:border-white/5">
+                                            <div className="flex -space-x-2">
+                                                {[1, 2, 3].map((i) => (
+                                                    <div key={i} className="h-8 w-8 rounded-full border-2 border-white dark:border-background-dark bg-gray-200 dark:bg-gray-700"></div>
+                                                ))}
+                                                <div className="h-8 w-8 rounded-full border-2 border-white dark:border-background-dark bg-primary flex items-center justify-center text-[10px] text-white font-bold">+5k</div>
+                                            </div>
+                                            <Link to="/past-papers" className="text-primary font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all">
+                                                Try this paper <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 {/* Features Grid */}
                 <section className="py-20 bg-white dark:bg-background-dark">
                     <div className="max-w-[1200px] mx-auto px-4 md:px-20 lg:px-40">
@@ -213,14 +282,14 @@ const HomePage = () => {
                         <div>
                             <h5 className="font-bold mb-4 dark:text-white">Contact</h5>
                             <ul className="text-sm text-gray-500 dark:text-white/60 space-y-2">
-                                <li>Email: hello@gceprep.cm</li>
-                                <li>Phone: +237 6XX XXX XXX</li>
-                                <li>Office: Buea, SW Region</li>
+                                <li>Email: Admin@gceprep.cm</li>
+                                <li>Phone: +237 675126745</li>
+                                <li>Office: Landmark Metropolitan University Buea</li>
                             </ul>
                         </div>
                     </div>
                     <div className="pt-8 border-t border-gray-100 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-                        <p className="text-xs text-gray-400">© 2024 GCE Prep. All rights reserved.</p>
+                        <p className="text-xs text-gray-400">© 2026 GCE Prep. All rights reserved.</p>
                         <div className="flex gap-6">
                             <a className="text-gray-400 hover:text-primary" href="#">
                                 <span className="material-symbols-outlined text-xl">social_leaderboard</span>

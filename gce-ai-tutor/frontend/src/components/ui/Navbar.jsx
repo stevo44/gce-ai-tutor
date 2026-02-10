@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = ({
     variant = 'default',
@@ -20,7 +21,6 @@ const Navbar = ({
         }
     };
 
-    // Default navbar for authenticated/dashboard views
     if (variant === 'sidebar') {
         const sidebarClasses = `
             fixed md:static z-50 h-full 
@@ -48,7 +48,6 @@ const Navbar = ({
             lg:block
         `;
 
-        // Helper for active link styling
         const getLinkClasses = ({ isActive }) => {
             const baseClasses = `flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${!isTabletExpanded && 'md:justify-center lg:justify-start'}`;
             const activeClasses = "bg-primary/10 text-primary font-semibold";
@@ -59,18 +58,16 @@ const Navbar = ({
         return (
             <aside className={sidebarClasses}>
                 <div className="flex flex-col gap-8">
-                    {/* Logo Area */}
-                    <div className={`flex items-center gap-3 px-2 ${!isTabletExpanded && 'md:justify-center lg:justify-start'}`}>
-                        <div className="bg-primary rounded-lg p-2 text-white shrink-0">
-                            <span className="material-symbols-outlined">school</span>
-                        </div>
-                        <div className={logoClasses}>
-                            <h1 className="text-primary dark:text-white text-base font-bold leading-tight">GCE Master</h1>
-                            <p className="text-gray-500 dark:text-gray-400 text-xs">Prep 2024</p>
+                    <div className={`flex items-center gap-3 px-2 ${!isTabletExpanded && 'md:justify-center'}`}>
+                        <div className="flex items-center gap-3">
+                            <img
+                                src="/images/covers/logo.png"
+                                alt="GCE Master Logo"
+                                className={`h-12 w-auto object-contain ${isTabletExpanded ? 'md:h-12' : 'md:h-10 lg:h-12'}`}
+                            />
                         </div>
                     </div>
 
-                    {/* Navigation Links */}
                     <nav className="flex flex-col gap-2">
                         <NavLink
                             className={getLinkClasses}
@@ -124,7 +121,6 @@ const Navbar = ({
                     </nav>
                 </div>
 
-                {/* User Profile / Logout */}
                 <div className={`flex flex-col gap-4 mt-auto ${!isTabletExpanded && 'md:hidden lg:flex'}`}>
                     <div className="bg-primary/5 rounded-xl p-4 flex items-center gap-3">
                         <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
@@ -151,19 +147,17 @@ const Navbar = ({
         );
     }
 
-    // Simple header navbar for landing/auth pages
     return (
         <header className="sticky top-0 z-50 w-full border-b border-solid border-[#eae9f1] dark:border-white/10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-4 md:px-20 lg:px-40 py-3">
             <div className="flex items-center justify-between max-w-[1200px] mx-auto">
                 <Link to="/" className="flex items-center gap-4">
-                    <div className="text-primary size-6">
-                        <svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                            <path clipRule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fillRule="evenodd"></path>
-                        </svg>
-                    </div>
-                    <h2 className="text-[#101910] dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">GCE Prep</h2>
+                    <img
+                        src="/images/covers/logo.png"
+                        alt="GCE Prep Logo"
+                        className="h-10 w-auto object-contain"
+                    />
                 </Link>
-                <div className="flex flex-1 justify-end gap-8 items-center">
+                <div className="flex flex-1 justify-end gap-4 sm:gap-8 items-center">
                     <nav className="hidden md:flex items-center gap-9">
                         <a className="text-[#101910] dark:text-white/80 text-sm font-medium hover:text-primary transition-colors" href="#features">Features</a>
                         <a className="text-[#101910] dark:text-white/80 text-sm font-medium hover:text-primary transition-colors" href="#how-it-works">How It Works</a>
@@ -173,20 +167,23 @@ const Navbar = ({
                             <Link className="text-[#101910] dark:text-white/80 text-sm font-medium hover:text-primary transition-colors" to="/login">Login</Link>
                         )}
                     </nav>
-                    {currentUser ? (
-                        <button
-                            onClick={handleLogout}
-                            className="flex min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 text-sm font-bold leading-normal tracking-[0.015em] transition-all bg-gray-100 text-charcoal hover:bg-gray-200 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
-                        >
-                            <span className="truncate">Sign Out</span>
-                        </button>
-                    ) : (
-                        <Link to="/register">
-                            <button className="flex min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 text-sm font-bold leading-normal tracking-[0.015em] transition-all bg-primary text-white hover:opacity-90">
-                                <span className="truncate">Get Started</span>
+                    <div className="flex items-center gap-2 sm:gap-4">
+                        <ThemeToggle />
+                        {currentUser ? (
+                            <button
+                                onClick={handleLogout}
+                                className="flex min-w-[80px] sm:min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-3 sm:px-5 text-sm font-bold leading-normal tracking-[0.015em] transition-all bg-gray-100 text-charcoal hover:bg-gray-200 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+                            >
+                                <span className="truncate">Sign Out</span>
                             </button>
-                        </Link>
-                    )}
+                        ) : (
+                            <Link to="/register">
+                                <button className="flex min-w-[80px] sm:min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-3 sm:px-5 text-sm font-bold leading-normal tracking-[0.015em] transition-all bg-primary text-white hover:opacity-90">
+                                    <span className="truncate">Get Started</span>
+                                </button>
+                            </Link>
+                        )}
+                    </div>
                 </div>
             </div>
         </header>

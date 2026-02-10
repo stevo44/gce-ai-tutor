@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useOutletContext, Link } from 'react-router-dom';
 import ProgressBar from '../components/dashboard/ProgressBar';
 import useAuth from '../hooks/useAuth';
+import ThemeToggle from '../components/ui/ThemeToggle';
 
 const TopicMasteryPage = () => {
     const { currentUser } = useAuth();
@@ -12,10 +13,8 @@ const TopicMasteryPage = () => {
 
     return (
         <div className="w-full">
-            {/* Top Nav Bar */}
             <header className="sticky top-0 z-10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 md:px-8 py-4 flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                    {/* Toggle Button for Mobile */}
                     <button
                         onClick={toggleSidebar}
                         className="lg:hidden p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
@@ -35,11 +34,11 @@ const TopicMasteryPage = () => {
                         <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
                         <input className="pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm w-64 focus:ring-2 focus:ring-primary/20" placeholder="Search topics..." type="text" />
                     </div>
+                    <ThemeToggle />
                 </div>
             </header>
 
             <div className="max-w-5xl mx-auto p-4 md:p-8">
-                {/* Breadcrumbs */}
                 <div className="flex items-center gap-2 mb-6">
                     <Link to="/dashboard" className="text-slate-400 text-sm hover:text-slate-600 flex items-center gap-1">
                         <span className="material-symbols-outlined text-lg">home</span>
@@ -126,7 +125,7 @@ const TopicMasteryPage = () => {
                                     </div>
                                     <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                         <Link to="/chat" className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-semibold rounded-lg hover:bg-primary/90 transition-colors">
-                                            <span className="material-symbols-outlined text-sm">smart_toy</span>
+                                            <img src="/images/covers/AI.png" alt="AI" className="w-4 h-4 object-contain" />
                                             Ask AI Tutor
                                         </Link>
                                         <Link to="/quiz" className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-xs font-semibold rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
@@ -146,7 +145,7 @@ const TopicMasteryPage = () => {
                                     </div>
                                     <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                         <Link to="/chat" className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-semibold rounded-lg">
-                                            <span className="material-symbols-outlined text-sm">smart_toy</span>
+                                            <img src="/images/covers/AI.png" alt="AI" className="w-4 h-4 object-contain" />
                                             Ask AI
                                         </Link>
                                         <Link to="/quiz" className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-xs font-semibold rounded-lg">
@@ -197,8 +196,8 @@ const TopicMasteryPage = () => {
 
             {/* AI Tutor Mini Modal (Visual Only) */}
             <div className="fixed bottom-6 right-6 z-50">
-                <Link to="/chat" className="size-14 rounded-full bg-primary text-white shadow-2xl flex items-center justify-center hover:scale-105 transition-transform">
-                    <span className="material-symbols-outlined text-3xl">smart_toy</span>
+                <Link to="/chat" className="size-14 rounded-full bg-primary text-white shadow-2xl flex items-center justify-center hover:scale-105 transition-transform p-2.5">
+                    <img src="/images/covers/AI.png" alt="AI Tutor" className="w-full h-full object-contain" />
                 </Link>
             </div>
         </div>

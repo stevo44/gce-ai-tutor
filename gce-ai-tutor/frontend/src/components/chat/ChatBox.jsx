@@ -1,6 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const ChatBox = () => {
+const ChatBox = ({ onSendMessage }) => {
+    const [message, setMessage] = useState('');
+
+    const handleSubmit = (e) => {
+        e?.preventDefault();
+        if (message.trim() && onSendMessage) {
+            onSendMessage(message.trim());
+            setMessage('');
+        }
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSubmit();
+        }
+    };
+
     return (
         <div className="p-4 sm:p-6 bg-white dark:bg-background-dark border-t border-gray-200 dark:border-gray-800">
             <div className="max-w-4xl mx-auto">
@@ -9,6 +26,9 @@ const ChatBox = () => {
                         <span className="material-symbols-outlined">attach_file</span>
                     </button>
                     <textarea
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        onKeyDown={handleKeyDown}
                         className="flex-1 bg-transparent border-none focus:ring-0 text-sm py-2 px-1 resize-none max-h-32 placeholder-gray-400 min-h-[40px] leading-relaxed"
                         placeholder="Ask your GCE tutor anything..."
                         rows="1"
@@ -17,7 +37,11 @@ const ChatBox = () => {
                         <button className="p-2 text-gray-500 hover:text-primary transition-colors">
                             <span className="material-symbols-outlined">mic</span>
                         </button>
-                        <button className="flex items-center justify-center size-10 bg-primary text-white rounded-lg hover:bg-primary/90 shadow-sm transition-all">
+                        <button
+                            onClick={handleSubmit}
+                            disabled={!message.trim()}
+                            className="flex items-center justify-center size-10 bg-primary text-white rounded-lg hover:bg-primary/90 shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
                             <span className="material-symbols-outlined">send</span>
                         </button>
                     </div>

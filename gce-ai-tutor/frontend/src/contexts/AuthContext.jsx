@@ -9,7 +9,6 @@ import {
 } from 'firebase/auth';
 import { auth } from '../firebase';
 
-// Create the authentication context
 export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
@@ -17,13 +16,11 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Register new user
     const register = async (email, password, displayName) => {
         try {
             setError(null);
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-            // Update user profile with display name
             if (displayName) {
                 await updateProfile(userCredential.user, {
                     displayName: displayName
@@ -37,7 +34,6 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Login user
     const login = async (email, password) => {
         try {
             setError(null);
@@ -49,7 +45,6 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Logout user
     const logout = async () => {
         try {
             setError(null);
@@ -60,7 +55,6 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Reset password
     const resetPassword = async (email) => {
         try {
             setError(null);
@@ -71,14 +65,12 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Listen for auth state changes
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user);
             setLoading(false);
         });
 
-        // Cleanup subscription on unmount
         return unsubscribe;
     }, []);
 

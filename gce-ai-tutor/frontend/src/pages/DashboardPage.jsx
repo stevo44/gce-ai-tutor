@@ -3,6 +3,7 @@ import { Link, useOutletContext } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import StatCard from '../components/dashboard/StatCard';
 import ChartPanel from '../components/dashboard/ChartPanel';
+import ThemeToggle from '../components/ui/ThemeToggle';
 
 const DashboardPage = () => {
     const { currentUser } = useAuth();
@@ -11,7 +12,6 @@ const DashboardPage = () => {
 
     return (
         <div className="w-full">
-            {/* Top Header & Stats */}
             <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
                 <div className="flex items-center gap-4">
                     {/* Sidebar Toggle Button (Mobile/Tablet) */}
@@ -30,7 +30,7 @@ const DashboardPage = () => {
                         <p className="text-gray-500 dark:text-gray-400 text-sm md:text-lg">Ready to master your GCE subjects today?</p>
                     </div>
                 </div>
-                <div className="flex gap-4">
+                <div className="flex gap-4 items-center">
                     <div className="flex items-center gap-4 bg-white dark:bg-background-dark p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800">
                         <div className="relative w-16 h-16 flex items-center justify-center">
                             <svg className="w-full h-full transform -rotate-90">
@@ -53,6 +53,7 @@ const DashboardPage = () => {
                             <p className="text-charcoal dark:text-white font-bold">12 Days</p>
                         </div>
                     </div>
+                    <ThemeToggle />
                 </div>
             </header>
 

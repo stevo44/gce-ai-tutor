@@ -2,22 +2,20 @@ import React from 'react';
 import { useOutletContext } from 'react-router-dom';
 import Timer from '../components/quiz/Timer';
 import QuestionCard from '../components/quiz/QuestionCard';
+import ThemeToggle from '../components/ui/ThemeToggle';
 
 const QuizPage = () => {
     const { toggleSidebar } = useOutletContext() || {};
 
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-full text-[#101019] dark:text-[#f9f9fb] transition-colors duration-200 flex flex-col">
-            {/* Progress Bar at the very top */}
             <div className="sticky top-0 left-0 w-full h-1 bg-[#d4d4e3] dark:bg-gray-800 z-40">
                 <div className="h-full bg-primary" style={{ width: '45%' }}></div>
             </div>
 
-            {/* Top Navigation Bar */}
             <header className="sticky top-1 z-30 w-full border-b border-[#eae9f1] dark:border-gray-800 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-4 md:px-6 py-3">
                 <div className="max-w-[960px] mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        {/* Toggle Button for Mobile */}
                         <button
                             onClick={toggleSidebar}
                             className="lg:hidden p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
@@ -39,13 +37,12 @@ const QuizPage = () => {
                         <button className="bg-primary hover:bg-primary/90 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap">
                             Finish Session
                         </button>
+                        <ThemeToggle />
                     </div>
                 </div>
             </header>
 
-            {/* Main Question Area */}
             <main className="flex-1 max-w-[800px] w-full mx-auto px-4 md:px-6 py-8 md:py-12 pb-24">
-                {/* Question Content */}
                 <QuestionCard
                     question="Which of the following elements has the highest electronegativity?"
                     options={['Fluorine', 'Oxygen', 'Chlorine', 'Nitrogen']}

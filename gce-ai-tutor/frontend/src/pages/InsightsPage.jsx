@@ -3,6 +3,7 @@ import { useOutletContext, Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import StatCard from '../components/dashboard/StatCard';
 import ChartPanel from '../components/dashboard/ChartPanel';
+import ThemeToggle from '../components/ui/ThemeToggle';
 
 const InsightsPage = () => {
     const { currentUser } = useAuth();
@@ -10,10 +11,8 @@ const InsightsPage = () => {
 
     return (
         <div className="w-full">
-            {/* Top Header */}
             <header className="sticky top-0 z-10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-4 md:px-8 py-4 flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                    {/* Toggle Button for Mobile */}
                     <button
                         onClick={toggleSidebar}
                         className="lg:hidden p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
@@ -30,11 +29,11 @@ const InsightsPage = () => {
                     <button className="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
                         <span className="material-symbols-outlined">download</span>
                     </button>
+                    <ThemeToggle />
                 </div>
             </header>
 
             <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8">
-                {/* Performance Overview */}
                 <section>
                     <div className="flex items-center justify-between mb-6">
                         <h3 className="text-lg font-bold text-gray-800 dark:text-white">Performance Overview</h3>

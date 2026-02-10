@@ -1,75 +1,68 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import Navbar from '../components/ui/Navbar';
 
 const RegisterPage = () => {
     const navigate = useNavigate();
     const { register, error: authError } = useAuth();
 
+    // Form and UI States
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
         password: '',
         examLevel: 'ordinary',
-        subjects: ['Mathematics', 'Physics', 'Chemistry']
+        subjects: ['Chemistry']
     });
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
     const [subjectInput, setSubjectInput] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleInputChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-        setError('');
-    };
-
-    const handleRemoveSubject = (subjectToRemove) => {
-        setFormData({
-            ...formData,
-            subjects: formData.subjects.filter(subject => subject !== subjectToRemove)
-        });
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     const handleAddSubject = (e) => {
         if (e.key === 'Enter' && subjectInput.trim()) {
             e.preventDefault();
-            if (!formData.subjects.includes(subjectInput.trim())) {
-                setFormData({
-                    ...formData,
-                    subjects: [...formData.subjects, subjectInput.trim()]
-                });
+            const trimmed = subjectInput.trim();
+            if (!formData.subjects.includes(trimmed)) {
+                setFormData(prev => ({
+                    ...prev,
+                    subjects: [...prev.subjects, trimmed]
+                }));
             }
             setSubjectInput('');
         }
     };
 
+    const handleRemoveSubject = (subjectToRemove) => {
+        setFormData(prev => ({
+            ...prev,
+            subjects: prev.subjects.filter(s => s !== subjectToRemove)
+        }));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+
+        if (formData.subjects.length === 0) {
+            setError('Please add at least one subject.');
+            return;
+        }
+
         setLoading(true);
-
         try {
-            // Register user with Firebase
-            await register(formData.email, formData.password, formData.fullName);
-
-            // TODO: Store additional user data (examLevel, subjects) in Firestore
-            // This will be implemented in a future enhancement
-
-            // Redirect to welcome page
-            navigate('/welcome', { replace: true });
+            await register(formData.email, formData.password, formData.fullName, {
+                examLevel: formData.examLevel,
+                subjects: formData.subjects
+            });
+            navigate('/welcome');
         } catch (err) {
-            // Provide user-friendly error messages
-            if (err.code === 'auth/email-already-in-use') {
-                setError('This email is already registered. Please log in instead.');
-            } else if (err.code === 'auth/weak-password') {
-                setError('Password should be at least 6 characters long.');
-            } else if (err.code === 'auth/invalid-email') {
-                setError('Please enter a valid email address.');
-            } else {
-                setError(err.message || 'Failed to create account. Please try again.');
-            }
+            setError(err.message || 'Registration failed.');
         } finally {
             setLoading(false);
         }
@@ -77,30 +70,8 @@ const RegisterPage = () => {
 
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col transition-colors duration-300">
-            {/* Header */}
-            <header className="w-full flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-gray-800 px-10 py-3 bg-background-light dark:bg-background-dark">
-                <Link to="/" className="flex items-center gap-4 text-primary dark:text-white">
-                    <div className="size-6">
-                        <svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                            <path clipRule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fillRule="evenodd"></path>
-                        </svg>
-                    </div>
-                    <h2 className="text-xl font-bold leading-tight tracking-tight">GCE Prep</h2>
-                </Link>
-                <div className="flex items-center gap-8">
-                    <nav className="hidden md:flex items-center gap-9">
-                        <Link className="text-gray-700 dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors" to="/">Home</Link>
-                        <Link className="text-gray-700 dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors" to="/dashboard">Dashboard</Link>
-                    </nav>
-                    <Link to="/login">
-                        <button className="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold transition-opacity hover:opacity-90">
-                            Login
-                        </button>
-                    </Link>
-                </div>
-            </header>
+            <Navbar />
 
-            {/* Main Content */}
             <main className="flex-1 flex items-center justify-center p-6 sm:p-12">
                 <div className="w-full max-w-[560px] bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
                     <div className="pt-10 pb-6 px-8 text-center">
@@ -108,7 +79,6 @@ const RegisterPage = () => {
                         <p className="text-gray-500 dark:text-gray-400 text-base">Start your journey to academic excellence.</p>
                     </div>
 
-                    {/* Error Message */}
                     {(error || authError) && (
                         <div className="mx-8 mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-start gap-2">
                             <span className="material-symbols-outlined text-red-600 dark:text-red-400 text-sm mt-0.5">error</span>
@@ -117,7 +87,6 @@ const RegisterPage = () => {
                     )}
 
                     <form className="px-8 pb-10 space-y-5" onSubmit={handleSubmit}>
-                        {/* Full Name */}
                         <div className="flex flex-col gap-1.5">
                             <label className="text-gray-800 dark:text-gray-200 text-sm font-semibold">Full Name</label>
                             <div className="relative">
@@ -135,7 +104,6 @@ const RegisterPage = () => {
                             </div>
                         </div>
 
-                        {/* Email */}
                         <div className="flex flex-col gap-1.5">
                             <label className="text-gray-800 dark:text-gray-200 text-sm font-semibold">Email Address</label>
                             <div className="relative">
@@ -153,7 +121,6 @@ const RegisterPage = () => {
                             </div>
                         </div>
 
-                        {/* Password & Exam Level Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div className="flex flex-col gap-1.5">
                                 <label className="text-gray-800 dark:text-gray-200 text-sm font-semibold">Password</label>
@@ -191,14 +158,12 @@ const RegisterPage = () => {
                             </div>
                         </div>
 
-                        {/* Select Subjects */}
                         <div className="flex flex-col gap-1.5">
                             <div className="flex justify-between items-center">
                                 <label className="text-gray-800 dark:text-gray-200 text-sm font-semibold">Select Subjects</label>
                                 <span className="text-[11px] text-gray-400 uppercase tracking-wider font-bold">Multi-select</span>
                             </div>
                             <div className="min-h-[100px] w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-background-light dark:bg-gray-800 flex flex-wrap gap-2 content-start">
-                                {/* Chips */}
                                 {formData.subjects.map((subject, index) => (
                                     <div key={index} className="flex items-center gap-1.5 bg-primary/10 border border-primary/20 text-primary dark:text-primary/90 px-3 py-1 rounded-full text-xs font-medium">
                                         {subject}
@@ -226,7 +191,6 @@ const RegisterPage = () => {
                             </p>
                         </div>
 
-                        {/* Submit Button */}
                         <div className="pt-4">
                             <button
                                 className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
@@ -247,7 +211,6 @@ const RegisterPage = () => {
                             </button>
                         </div>
 
-                        {/* Footer Link */}
                         <div className="text-center pt-4">
                             <p className="text-sm text-gray-500 dark:text-gray-400">
                                 Already have an account?
@@ -258,9 +221,8 @@ const RegisterPage = () => {
                 </div>
             </main>
 
-            {/* Footer */}
             <footer className="py-6 text-center text-gray-400 text-xs">
-                © 2024 GCE Prep. All rights reserved.
+                © 2026 GCE Prep. All rights reserved.
                 <div className="mt-1 flex justify-center gap-4">
                     <a className="hover:text-primary transition-colors" href="#">Privacy Policy</a>
                     <a className="hover:text-primary transition-colors" href="#">Terms of Service</a>

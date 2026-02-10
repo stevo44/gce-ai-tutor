@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
+import ThemeToggle from '../components/ui/ThemeToggle';
 
 const PastPapersPage = () => {
     const { toggleSidebar } = useOutletContext() || {};
@@ -43,8 +44,7 @@ const PastPapersPage = () => {
 
     return (
         <div className="w-full min-h-screen bg-background-light dark:bg-background-dark">
-            {/* Header */}
-            <header className="sticky top-0 z-10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-4 md:px-8 py-4">
+            <header className="sticky top-0 z-10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-4 md:px-8 py-4 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <button
                         onClick={toggleSidebar}
@@ -58,6 +58,7 @@ const PastPapersPage = () => {
                         <p className="text-sm text-gray-500 dark:text-gray-400">View and download past examination papers</p>
                     </div>
                 </div>
+                <ThemeToggle />
             </header>
 
             {/* Main Content */}
